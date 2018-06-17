@@ -2,11 +2,15 @@
 
 #include <SFML/Graphics.hpp>
 
+#include "GameLogic\GameLogic.hpp"
+#include "Physics\Physics.hpp"
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-	sf::CircleShape shape(100.f);
-	shape.setFillColor(sf::Color::Green);
+	sf::RenderWindow window(sf::VideoMode(1024, 780), "SFML works!");
+
+	Physics physics;
+	GameLogic logic(physics);	
 
 	while (window.isOpen())
 	{
@@ -17,9 +21,8 @@ int main()
 				window.close();
 		}
 
-		window.clear();
-		window.draw(shape);
-		window.display();
+		logic.update();
+		physics.update();
 	}
 
 	return 0;

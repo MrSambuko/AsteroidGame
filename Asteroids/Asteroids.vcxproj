@@ -69,10 +69,10 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\Users\anton\source\repos\SFML-2.4.2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\anton\source\repos\SFML-2.4.2\include;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\anton\source\repos\SFML-2.4.2\include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\anton\source\repos\SFML-2.4.2\include;$(ProjectDir);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
