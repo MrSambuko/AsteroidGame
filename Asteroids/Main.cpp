@@ -10,8 +10,10 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1024, 780), "SFML works!");
 
 	Physics physics;
-	GameLogic logic(physics);	
+	GameLogic logic(&physics);	
+	logic.init();
 
+	logic.createGameObject({ 5.f, .0f });
 	while (window.isOpen())
 	{
 		sf::Event event;

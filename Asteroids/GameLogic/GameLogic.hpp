@@ -1,5 +1,7 @@
 #pragma once
 
+#include <memory>
+
 #include "SFML\System\Vector2.hpp"
 
 #include "Physics\Physics.hpp"
@@ -15,26 +17,31 @@ public:
 private:
 	GameLogic* gameLogic_;
 	PhysicsBody * physicsBody_;
-	sf::Vector2f position_;
 	bool isPlayer_;
 };
+using GameLogicObjectPtr = std::shared_ptr<GameLogicObject> ;
+
+
+
 
 class GameLogic final
 {
 public:
-	GameLogic(const Physics& physics);
+	GameLogic(Physics* physics);
 
+	void init();
 	int update();
 
-	Physics& getPhysics() { return physics_; }
+	void createGameObject(const sf::Vector2f& position);
+	Physics* getPhysics() const { return physics_; }
 
 private:
-	void init();
-
-	int onBodiesCollision(const PhysicsBody& body1, const PhysicsBody& body2);
+	void onBodiesCollision(const PhysicsBody& body1, const PhysicsBody& body2);
 
 private:
 	std::unique_ptr<GameLogicObject> player_;
-	Physics physics_;
+
+	std::vector<GameLogicObjectPtr> objects_;
+	Physics* physics_;
 
 };
