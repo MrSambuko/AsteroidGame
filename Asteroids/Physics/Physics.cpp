@@ -4,56 +4,10 @@
 
 
 
-PhysicsBody::PhysicsBody(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f&& position, LeaveFieldStrategy strategy) :
-	physics_(physics),
-	logicObject_(logicObject),
-	strategy_(strategy),
-	position_(position)
-{
-	shape_.setPosition(position);
-	shape_.setRadius(10);
-}
-
-void PhysicsBody::move()
-{
-	position_ += velocity_;
-
-	const auto& bounds = physics_->getBounds();
-	if (position_.x < 0 || position_.y < 0 || position_.x > bounds.x || position_.y > bounds.y)
-	{
-		switch (strategy_)
-		{
-		case DESTROY:
-			logicObject_->markForDestruction();
-			break;
-
-		case BOUNCE:
-			position_.x = -position_.x;
-			position_.y = -position_.y;
-			break;
-
-		default:
-			break;
-		}
-	}
-
-	
-}
-
-void PhysicsBody::reverseVelocity()
-{
-	velocity_.x = -velocity_.x;
-	velocity_.y = -velocity_.y;
-}
-
-bool PhysicsBody::intersects(const PhysicsBody& other) const
-{
-	return shape_.getGlobalBounds().intersects(other.shape_.getGlobalBounds());
-}
 
 PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, LeaveFieldStrategy strategy)
 {
-	auto ptr = std::make_shared<PhysicsBody>( this, obj, std::move(position), strategy );
+	auto ptr = std::make_shared<PhysicsObject>( this, obj, std::move(position), strategy );
 	bodies_.insert(ptr);
 	return ptr;
 }

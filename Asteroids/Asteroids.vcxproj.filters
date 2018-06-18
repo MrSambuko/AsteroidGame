@@ -8,6 +8,12 @@
     <ClCompile Include="Physics\Physics.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameLogic\GameLogicObject.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -22,6 +28,12 @@
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="Physics\Physics.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\GameLogicObject.hpp">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PhysicsObject.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>

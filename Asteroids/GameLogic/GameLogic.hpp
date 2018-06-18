@@ -6,18 +6,9 @@
 
 #include "SFML\System\Vector2.hpp"
 
+#include "GameLogicObject.hpp"
 #include "Physics\Physics.hpp"
 
-
-class GameLogic;
-
-enum GameLogicObjectType
-{
-	PLAYER,
-	ASTEROID,
-	PROJECTILE,
-	BOSS,
-};
 
 static std::unordered_map<GameLogicObjectType, LeaveFieldStrategy> LogicTypeToStrategy = 
 {
@@ -26,25 +17,6 @@ static std::unordered_map<GameLogicObjectType, LeaveFieldStrategy> LogicTypeToSt
 	{PROJECTILE, DESTROY},
 	{BOSS, KEEP}
 };
-
-class GameLogicObject final
-{
-public:
-	GameLogicObject(GameLogic* logic, const sf::Vector2f& position, GameLogicObjectType type);
-	~GameLogicObject();
-
-	constexpr void markForDestruction() { shouldDestroy_ = true; }
-	constexpr bool shouldDestroy() const { return shouldDestroy_; }
-	constexpr GameLogicObjectType getType() const { return type_; }
-private:
-	GameLogic* gameLogic_;
-	PhysicsBodyPtr physicsBody_;
-
-	bool shouldDestroy_ = false;
-	GameLogicObjectType type_;
-};
-using GameLogicObjectPtr = std::shared_ptr<GameLogicObject> ;
-
 
 
 
@@ -60,7 +32,9 @@ public:
 	Physics* getPhysics() const { return physics_; }
 
 private:
-	void onBodiesCollision(const PhysicsBody& body1, const PhysicsBody& body2);
+	void destroyObjects();
+
+	void onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2);
 
 private:
 	GameLogicObjectPtr player_;

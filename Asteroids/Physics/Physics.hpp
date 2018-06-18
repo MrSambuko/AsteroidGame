@@ -8,44 +8,10 @@
 #include "SFML\System\Vector2.hpp"
 #include "SFML\Graphics\CircleShape.hpp"
 
-
-class GameLogicObject;
-class Physics;
+#include "PhysicsObject.hpp"
 
 
-enum LeaveFieldStrategy
-{
-	DESTROY,
-	BOUNCE,
-	KEEP
-};
-
-class PhysicsBody final
-{
-public:
-	PhysicsBody(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f&& position, LeaveFieldStrategy strategy);
-	constexpr GameLogicObject* getLogicObject() const { return logicObject_; }
-
-	void move();
-	void reverseVelocity();
-	void setVelocity(const sf::Vector2f&& newVelocity) { velocity_ = newVelocity; }
-	bool intersects(const PhysicsBody& other) const;
-private:
-	Physics* physics_;
-	GameLogicObject* logicObject_;
-
-	LeaveFieldStrategy strategy_;
-
-	sf::Vector2f position_;
-	sf::Vector2f velocity_;
-
-	sf::CircleShape shape_;
-};
-
-using PhysicsBodyPtr = std::shared_ptr<PhysicsBody>;
-
-
-using CollisionCallback = std::function<void(const PhysicsBody&, const PhysicsBody&)>;
+using CollisionCallback = std::function<void(const PhysicsObject&, const PhysicsObject&)>;
 
 class Physics final
 {
