@@ -2,6 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 
+#include "GameLogic\Scenario.hpp"
 #include "GameLogic\GameLogic.hpp"
 #include "Physics\Physics.hpp"
 
@@ -13,8 +14,10 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!");
 
+	Scenario s("scenarios.ini");
+
 	Physics physics(static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
-	GameLogic logic(&physics);	
+	GameLogic logic(s, &physics);	
 	logic.init();
 
 	logic.createGameObject({ 5.f, .0f }, ASTEROID);

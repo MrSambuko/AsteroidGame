@@ -1,13 +1,15 @@
 
 #include "Physics\Physics.hpp"
 
+#include "Scenario.hpp"
 #include "GameLogic.hpp"
 
 
 
 
-GameLogic::GameLogic(Physics* physics) :
+GameLogic::GameLogic(const Scenario& scenario, Physics* physics) :
 	player_(nullptr),
+	scenario_(scenario),
 	physics_(physics)
 {
 }

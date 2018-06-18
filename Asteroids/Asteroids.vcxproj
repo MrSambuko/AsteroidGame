@@ -130,6 +130,7 @@
   <ItemGroup>
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GameLogicObject.cpp" />
+    <ClCompile Include="GameLogic\Scenario.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsObject.cpp" />
@@ -137,8 +138,13 @@
   <ItemGroup>
     <ClInclude Include="GameLogic\GameLogic.hpp" />
     <ClInclude Include="GameLogic\GameLogicObject.hpp" />
+    <ClInclude Include="GameLogic\Scenario.hpp" />
     <ClInclude Include="Physics\Physics.hpp" />
     <ClInclude Include="Physics\PhysicsObject.hpp" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GameLogic\scenarios.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

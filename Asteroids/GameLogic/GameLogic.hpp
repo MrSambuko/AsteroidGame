@@ -7,8 +7,9 @@
 #include "SFML\System\Vector2.hpp"
 
 #include "GameLogicObject.hpp"
-#include "Physics\Physics.hpp"
+#include "Scenario.hpp"
 
+class Physics;
 
 static std::unordered_map<GameLogicObjectType, LeaveFieldStrategy> LogicTypeToStrategy = 
 {
@@ -23,7 +24,7 @@ static std::unordered_map<GameLogicObjectType, LeaveFieldStrategy> LogicTypeToSt
 class GameLogic final
 {
 public:
-	explicit GameLogic(Physics* physics);
+	explicit GameLogic(const Scenario& scenario, Physics* physics);
 
 	void init();
 	int update();
@@ -40,6 +41,8 @@ private:
 	GameLogicObjectPtr player_;
 
 	std::unordered_set<GameLogicObjectPtr> objects_;
+
+	Scenario scenario_;
 	Physics* physics_;
 
 };

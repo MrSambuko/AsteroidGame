@@ -14,6 +14,9 @@
     <ClCompile Include="Physics\PhysicsObject.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="GameLogic\Scenario.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -21,6 +24,9 @@
     </Filter>
     <Filter Include="Physics">
       <UniqueIdentifier>{7c07c97b-fc6e-4027-90ab-a5ef1ea9fccf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{987a33c9-67f4-42a7-9ca4-825a01517605}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -36,5 +42,14 @@
     <ClInclude Include="Physics\PhysicsObject.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="GameLogic\Scenario.hpp">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="GameLogic\scenarios.ini">
+      <Filter>Resources</Filter>
+    </Text>
   </ItemGroup>
 </Project>
