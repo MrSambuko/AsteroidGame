@@ -14,8 +14,9 @@ GameLogic::GameLogic(const Scenario& scenario, Physics* physics) :
 {
 }
 
-int GameLogic::update()
+int GameLogic::update(const sf::Time& dt)
 {
+	scenario_.update(dt);
 	destroyObjects();
 	return 0;
 }
@@ -23,7 +24,18 @@ int GameLogic::update()
 void GameLogic::createGameObject(const sf::Vector2f & position, GameLogicObjectType type)
 {
 	objects_.insert(std::make_shared<GameLogicObject>(this, position, type));
+
+	switch (type)
+	{
+	case ASTEROID: 
+		++numAsteroids_;
+		break;
+	case BOSS:
+		++numBosses_;
+		break;
+	};
 }
+
 
 void GameLogic::init()
 {
@@ -34,6 +46,9 @@ void GameLogic::init()
 		});
 	player_ = std::make_shared<GameLogicObject>(this, sf::Vector2f(.0f, .0f), PLAYER);
 	objects_.insert(player_);
+	scenario_.setGameLogic(this);
+	scenario_.setCurrentLevel(0);
+	scenario_.start();
 }
 
 void GameLogic::destroyObjects()

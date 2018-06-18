@@ -1,6 +1,7 @@
 // Tutorial from https://www.sfml-dev.org/tutorials/2.4/start-vc.php
 
 #include "SFML/Graphics.hpp"
+#include "SFML\System\Clock.hpp"
 
 #include "GameLogic\Scenario.hpp"
 #include "GameLogic\GameLogic.hpp"
@@ -15,12 +16,11 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!");
 
 	Scenario s("scenarios.ini");
-
+	sf::Clock clock;
 	Physics physics(static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
 	GameLogic logic(s, &physics);	
 	logic.init();
 
-	logic.createGameObject({ 5.f, .0f }, ASTEROID);
 	while (window.isOpen())
 	{
 		sf::Event event;
@@ -30,7 +30,7 @@ int main()
 				window.close();
 		}
 
-		logic.update();
+		logic.update(clock.getElapsedTime());
 		physics.update();
 	}
 

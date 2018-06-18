@@ -5,11 +5,13 @@
 
 #include <iostream>
 
+#include "GameLogic.hpp"
+
 #include "Scenario.hpp"
 
-Scenario::Scenario(const std::string& fileName)
+Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 {
-	scenarios_[0] = { 1000, 600, 0, 10, 0, 0 };
+	scenarios_[0] = { 1000, 600, 2, 10, 0, 0 };
 	/*
 	std::ifstream file;
 	file.open(fileName);
@@ -28,7 +30,17 @@ Scenario::Scenario(const std::string& fileName)
 	}*/
 }
 
-ScnearioDetails Scenario::getScenarioDetails(int level)
+void Scenario::update(const sf::Time& dt)
+{
+	auto elapsed = clock_.getElapsedTime();
+
+	int curAsteroids = gameLogic_->getNumOfAsteroids();
+
+	if (curAsteroids < currentScenario_.maxAsteroids)
+		gameLogic_->createGameObject({ .0f, .0f }, ASTEROID);
+}
+
+ScenarioDetails Scenario::getScenarioDetails(int level)
 {
 	assert(scenarios_.find(level) != scenarios_.end());
 	return scenarios_[level];
