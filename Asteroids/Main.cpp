@@ -1,19 +1,23 @@
 // Tutorial from https://www.sfml-dev.org/tutorials/2.4/start-vc.php
 
-#include <SFML/Graphics.hpp>
+#include "SFML/Graphics.hpp"
 
 #include "GameLogic\GameLogic.hpp"
 #include "Physics\Physics.hpp"
 
+
+constexpr unsigned WIDTH = 1024;
+constexpr unsigned HEIGHT = 780;
+
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1024, 780), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "SFML works!");
 
-	Physics physics;
+	Physics physics(static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
 	GameLogic logic(&physics);	
 	logic.init();
 
-	logic.createGameObject({ 5.f, .0f });
+	logic.createGameObject({ 5.f, .0f }, ASTEROID);
 	while (window.isOpen())
 	{
 		sf::Event event;
