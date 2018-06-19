@@ -20,7 +20,7 @@ namespace
 	}
 
 
-	enum Side
+	enum
 	{
 		UP,
 		RIGHT,
@@ -64,7 +64,6 @@ sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
 PhysicsObjectPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position)
 {
 	const auto type = obj->getType();
-	const auto strategy = LeaveLogicTypeToStrategy[obj->getType()];
 
 	PhysicsObjectPtr ptr = nullptr;
 
@@ -78,7 +77,13 @@ PhysicsObjectPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vect
 		ptr = std::make_shared<PlayerPhysicsObject>(this, obj);
 		break;
 
-	default: break;
+	case GL::PROJECTILE:
+		ptr = std::make_shared<ProjectilePhysicsObject>(this, obj, position);
+		break;
+
+	default: 
+		assert(false);
+		break;
 	}
 	
 	bodies_.insert(ptr);
@@ -106,6 +111,11 @@ int Physics::update(float dt)
 	return 0;
 }
 
+sf::Vector2f Physics::normalizeVector( const sf::Vector2f&& vector )
+{
+	return ::normalizeVector(vector);
+}
+
 void Physics::updateCollisions()
 {
 	std::vector<PhysicsObjectPtr> bodies(bodies_.begin(), bodies_.end());
@@ -119,8 +129,6 @@ void Physics::updateCollisions()
 			auto& b2 = *bodies[j];
 			if (b1.intersects(b2))
 			{
-				b1.reverseVelocity();
-				b2.reverseVelocity();
 				callback_(b1, b2);
 			}
 		}

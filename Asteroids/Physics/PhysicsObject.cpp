@@ -50,6 +50,11 @@ void PhysicsObject::reverseVelocity()
 }
 
 
+void PhysicsObject::setDirection( const sf::Vector2f&& newDirection )
+{
+	direction_ = physics_->normalizeVector(std::move(newDirection));
+}
+
 bool PhysicsObject::intersects(const PhysicsObject& other) const
 {
 	return shape_->getGlobalBounds().intersects(other.shape_->getGlobalBounds());
@@ -62,8 +67,17 @@ PlayerPhysicsObject::PlayerPhysicsObject( Physics* physics, GameLogicObject* log
 	shape_->setFillColor(sf::Color::Red);
 }
 
+
 AsteroidPhysicsObject::AsteroidPhysicsObject( Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position ) :
 	PhysicsObject(physics, logicObject, position, PY::BOUNCE)
 {
 	shape_ = std::make_shared<sf::CircleShape>(25.f, 256);
+}
+
+ProjectilePhysicsObject::ProjectilePhysicsObject( Physics* physics, GameLogicObject* logicObject,const sf::Vector2f& position ) :
+	PhysicsObject(physics, logicObject, position, PY::DESTROY)
+{
+	shape_ = std::make_shared<sf::CircleShape>(2.5f, 32);
+	shape_->setFillColor(sf::Color::Blue);
+
 }

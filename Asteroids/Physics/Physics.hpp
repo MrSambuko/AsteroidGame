@@ -11,7 +11,7 @@
 #include "PhysicsObject.hpp"
 
 
-using CollisionCallback = std::function<void(const PhysicsObject&, const PhysicsObject&)>;
+using CollisionCallback = std::function<void(PhysicsObject&, PhysicsObject&)>;
 
 class Physics final
 {
@@ -32,6 +32,9 @@ public:
 	}
 
 	int update(float dt);
+
+	static sf::Vector2f normalizeVector(const sf::Vector2f&& vector);
+
 
 private:
 	void updateCollisions();

@@ -30,17 +30,19 @@ public:
 	void move(const float& dt);
 	void reverseVelocity();
 	void setVelocity(const sf::Vector2f&& newVelocity) { velocity_ = newVelocity; }
+	void setDirection( const sf::Vector2f&& newDirection );
 	bool intersects(const PhysicsObject& other) const;
 
-	const sf::Vector2f& getPosition() const { return position_; }
+	constexpr const sf::Vector2f& getPosition() const { return position_; }
+	constexpr const sf::Vector2f& getDirection() const { return direction_; }
 	std::shared_ptr<sf::Shape> getShape() const { return shape_; }
 protected:
-	Physics * physics_;
+	Physics* physics_;
 	GameLogicObject* logicObject_;
 
 	PY::LeaveFieldStrategy strategy_;
 
-	sf::Vector2f orientation_;
+	sf::Vector2f direction_;
 	sf::Vector2f position_;
 	sf::Vector2f velocity_;
 
@@ -59,4 +61,10 @@ class AsteroidPhysicsObject : public PhysicsObject
 {
 public:
 	AsteroidPhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position);
+};
+
+class ProjectilePhysicsObject : public PhysicsObject
+{
+public:
+	ProjectilePhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position);
 };

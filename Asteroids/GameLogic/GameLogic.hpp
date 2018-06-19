@@ -4,11 +4,15 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "SFML\System\Vector2.hpp"
+
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Window/Window.hpp"
+#include <SFML/Window/Keyboard.hpp>
 
 #include "GameLogicObject.hpp"
 #include "Scenario.hpp"
-#include <SFML/Window/Keyboard.hpp>
+
+
 
 class Physics;
 
@@ -25,7 +29,7 @@ static std::unordered_map< GL::GameLogicObjectType, PY::LeaveFieldStrategy> Leav
 class GameLogic final
 {
 public:
-	explicit GameLogic(Scenario&& scenario, Physics* physics);
+	explicit GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics);
 
 	void init();
 	int update( float dt );
@@ -43,9 +47,12 @@ public:
 	const std::unordered_set<GameLogicObjectPtr>& getObjects() const { return objects_; }
 
 private:
+	void movePlayer() const;
+	void rotatePlayer() const;
+	void handlePlayerShooting();
 	void destroyObjects();
 
-	void onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2);
+	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2);
 
 private:
 	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
@@ -55,6 +62,7 @@ private:
 	int numAsteroids_ = 0;
 	int numBosses_ = 0;
 
+	sf::Window* window_ = nullptr;
 	Scenario scenario_;
 	Physics* physics_ = nullptr;
 

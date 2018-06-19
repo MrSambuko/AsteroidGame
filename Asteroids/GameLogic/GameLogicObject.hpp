@@ -4,6 +4,7 @@
 
 #include "Physics\Physics.hpp"
 #include <SFML/Window/Keyboard.hpp>
+#include <chrono>
 
 
 class GameLogic;
@@ -36,6 +37,7 @@ static std::unordered_map<sf::Keyboard::Key, int> keyToDirectionMap =
 
 constexpr static float PLAYER_SPEED = 1000.f;
 constexpr static float ASTEROID_SPEED = 250.f;
+constexpr static float PROJECTILE_SPEED = 10000.f;
 
 static std::unordered_map<int, sf::Vector2f> moveToVectorMap = 
 {
@@ -45,7 +47,9 @@ static std::unordered_map<int, sf::Vector2f> moveToVectorMap =
 	{DOWN,	sf::Vector2f(  .0f,  1.0f)*PLAYER_SPEED},
 	{LEFT,	sf::Vector2f(-1.0f,   .0f)*PLAYER_SPEED}
 };
-};
+
+constexpr static float SHOOT_INTERVAL = 5.f;
+}
 
 class GameLogicObject
 {
@@ -73,25 +77,53 @@ class PlayerGameLogicObject : public GameLogicObject
 public:
 	PlayerGameLogicObject(GameLogic* logic) : GameLogicObject(logic, {}, GL::PLAYER) {}
 	
-	void startMoving(GL::MoveDirection direction)
+	constexpr void startMoving(GL::MoveDirection direction)
 	{
 		moveDirection_ |= direction;
 	}
 
-	void stopMoving(GL::MoveDirection direction)
+	constexpr void stopMoving(GL::MoveDirection direction)
 	{
 		moveDirection_ ^= direction;
 	}
 
+	constexpr void startShooting()
+	{
+		isShooting_ = true;
+	}
+
+	constexpr void stopShooting()
+	{
+		isShooting_ = false;
+	}
+
+	constexpr void setLastTimeShooting(const std::chrono::time_point<std::chrono::steady_clock>& lastTimeShooting)
+	{
+		lastTimeShooting_ = lastTimeShooting;
+	}
+
 	constexpr bool isMoving() const { return moveDirection_ != GL::NO_MOVE; }
+	constexpr bool isShooting() const { return isShooting_; }
+	constexpr std::chrono::time_point<std::chrono::steady_clock> lastTimeShooting() const { return lastTimeShooting_; }
 	constexpr GL::MoveDirection getMoveDirection() const { return moveDirection_; }
 
+
+
 private:
+	bool isShooting_ = false;
+	std::chrono::time_point<std::chrono::steady_clock> lastTimeShooting_;
 	GL::MoveDirection moveDirection_ = GL::NO_MOVE;
 };
+
 
 class AsteroidGameLogicObject : public GameLogicObject
 {
 public:
 	AsteroidGameLogicObject(GameLogic* logic);
+};
+
+class ProjectileGameLogicObject : public GameLogicObject
+{
+public:
+	ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction );
 };

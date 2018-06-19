@@ -21,3 +21,9 @@ AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :
 {
 	physicsObject_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsObject_->getPosition(), GL::ASTEROID_SPEED));
 }
+
+ProjectileGameLogicObject::ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction): 
+	GameLogicObject(logic, position, GL::PROJECTILE)
+{
+	physicsObject_->setVelocity(direction * GL::PROJECTILE_SPEED);
+}

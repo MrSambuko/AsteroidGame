@@ -21,7 +21,7 @@ int main()
 	Scenario s("scenarios.ini");
 	sf::Clock clock;
 	Physics physics(static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
-	GameLogic logic(std::move(s), &physics);	
+	GameLogic logic(&window, std::move(s), &physics);	
 	Render render(&logic, &window);
 	logic.init();
 

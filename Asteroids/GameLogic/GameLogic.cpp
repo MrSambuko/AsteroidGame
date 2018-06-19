@@ -1,3 +1,4 @@
+#include "SFML/Window/Mouse.hpp"
 
 #include "Physics\Physics.hpp"
 
@@ -7,7 +8,8 @@
 
 
 
-GameLogic::GameLogic(Scenario&& scenario, Physics* physics) :
+GameLogic::GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics) :
+	window_(window),
 	scenario_(scenario),
 	physics_(physics)
 {
@@ -16,18 +18,11 @@ GameLogic::GameLogic(Scenario&& scenario, Physics* physics) :
 int GameLogic::update( float dt )
 {
 	// move player
-	sf::Vector2f velocity;
-	if (player_->isMoving())
-	{
-		const auto& playerMoveDirection = player_->getMoveDirection();
-		for (const auto& pair : GL::moveToVectorMap)
-		{
-			if (playerMoveDirection & pair.first)
-				velocity += pair.second;
-		}
-		
-	}
-	player_->getPhysicalObject()->setVelocity(std::move(velocity));
+	rotatePlayer();
+	movePlayer();
+
+	// shoot
+	handlePlayerShooting();
 
 	scenario_.update(dt);
 	destroyObjects();
@@ -48,6 +43,10 @@ void GameLogic::handleKeyPressed( sf::Keyboard::Key key ) const
 		break;
 	}
 
+	case sf::Keyboard::Space:
+		player_->startShooting();
+		break;
+
 	default: 
 		break;
 	}
@@ -67,6 +66,10 @@ void GameLogic::handleKeyReleased( sf::Keyboard::Key key )
 		break;
 	}
 
+	case sf::Keyboard::Space:
+		player_->stopShooting();
+		break;
+
 	default: 
 		break;
 	}
@@ -77,12 +80,19 @@ void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObj
 	switch (type)
 	{
 	case GL::ASTEROID:
-		objects_.insert(std::make_shared<AsteroidGameLogicObject>(this));
+		objects_.emplace(std::make_shared<AsteroidGameLogicObject>(this));
 		++numAsteroids_;
 		break;
 	case GL::BOSS:
 		++numBosses_;
 		break;
+	case GL::PROJECTILE:
+	{
+		const auto& direction = player_->getPhysicalObject()->getDirection();
+		const auto& newPosition = position + direction*11.f;
+		objects_.emplace(std::make_shared<ProjectileGameLogicObject>(this, position, player_->getPhysicalObject()->getDirection()));
+		break;
+	}
 	default:
 		break;
 	};
@@ -92,7 +102,7 @@ void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObj
 void GameLogic::init()
 {
 	physics_->setCollistionCallback(
-		[this](const PhysicsObject& body1, const PhysicsObject& body2)
+		[this](PhysicsObject& body1, PhysicsObject& body2)
 		{
 			this->onBodiesCollision(body1, body2);
 		});
@@ -116,17 +126,83 @@ void GameLogic::destroyObjects()
 	while (!objectsToDestroy.empty())
 	{
 		const auto object = objectsToDestroy.back();
+		switch (object->getType())
+		{
+		case GL::ASTEROID:
+			--numAsteroids_;
+			break;
+		case GL::PLAYER:
+			player_ = nullptr;
+			break;
+		}
 		objectsToDestroy.pop_back();
 		objects_.erase(object);
 	}
 }
 
-void GameLogic::onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2)
+void GameLogic::movePlayer() const
+{
+	sf::Vector2f velocity;
+	if (player_->isMoving())
+	{
+		const auto& playerMoveDirection = player_->getMoveDirection();
+		for (const auto& pair : GL::moveToVectorMap)
+		{
+			if (playerMoveDirection & pair.first)
+				velocity += pair.second;
+		}
+		
+	}
+	player_->getPhysicalObject()->setVelocity(std::move(velocity));
+
+}
+
+void GameLogic::rotatePlayer() const
+{
+	const auto& player = player_->getPhysicalObject();
+	const auto& mousePosition = sf::Mouse::getPosition(*window_);
+	const sf::Vector2f localPosition(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
+	const auto& direction = localPosition - player->getPosition();
+	player->setDirection(std::move(direction));
+}
+
+void GameLogic::handlePlayerShooting()
+{
+	if (player_->isShooting())
+	{
+		const auto& now = std::chrono::steady_clock::now();
+		const auto& diffTime = std::chrono::duration_cast<std::chrono::duration<float>>(now - player_->lastTimeShooting());
+		if (diffTime.count() > GL::SHOOT_INTERVAL)
+		{
+			createGameObject(player_->getPhysicalObject()->getPosition(), GL::PROJECTILE);
+			player_->setLastTimeShooting(now);
+		}
+	}
+}
+
+void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 {
 	// if any of the objects is player - game is over
-	if (body1.getLogicObject()->getType() == GL::PLAYER || body2.getLogicObject()->getType() == GL::PLAYER)
+	const auto& b1Type = body1.getLogicObject()->getType();
+	const auto& b2Type = body2.getLogicObject()->getType();
+	if (b1Type == GL::PLAYER || b2Type == GL::PLAYER)
 	{
-		player_->markForDestruction();
+		// ignore collision with own bullets
+		if (b1Type != GL::PROJECTILE && b2Type != GL::PROJECTILE)
+			player_->markForDestruction();
+	}
+	else
+	{
+		if (b1Type == GL::PROJECTILE && b2Type == GL::ASTEROID || b1Type == GL::ASTEROID && b2Type == GL::PROJECTILE)
+		{
+			body1.getLogicObject()->markForDestruction();
+			body2.getLogicObject()->markForDestruction();
+		}
+		else
+		{
+			body1.reverseVelocity();
+			body2.reverseVelocity();
+		}
 	}
 	return;
 }

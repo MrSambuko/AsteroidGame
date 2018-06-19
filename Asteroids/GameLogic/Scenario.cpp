@@ -11,7 +11,7 @@
 
 Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 {
-	scenarios_[0] = { 1000, 600, 2, 10, 0, 0 };
+	scenarios_[0] = { 1000, 600, 2, 1, 0, 0 };
 	/*
 	std::ifstream file;
 	file.open(fileName);
