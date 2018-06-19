@@ -7,7 +7,8 @@
 
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Window/Window.hpp"
-#include <SFML/Window/Keyboard.hpp>
+#include "SFML/Window/Keyboard.hpp"
+#include "SFML/Window/Mouse.hpp"
 
 #include "GameLogicObject.hpp"
 #include "Scenario.hpp"
@@ -36,6 +37,8 @@ public:
 
 	void handleKeyPressed(sf::Keyboard::Key key) const;
 	void handleKeyReleased(sf::Keyboard::Key key) const;
+	void handleMousePressedEvent(sf::Mouse::Button button) const;
+	void handleMouseReleasedEvent(sf::Mouse::Button button) const;
 
 	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
 	Physics* getPhysics() const { return physics_; }

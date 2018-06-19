@@ -78,6 +78,6 @@ ProjectilePhysicsObject::ProjectilePhysicsObject( Physics* physics, GameLogicObj
 	PhysicsObject(physics, logicObject, position, PY::DESTROY)
 {
 	shape_ = std::make_shared<sf::CircleShape>(2.5f, 32);
-	shape_->setFillColor(sf::Color::Blue);
+	shape_->setFillColor(sf::Color::Yellow);
 
 }

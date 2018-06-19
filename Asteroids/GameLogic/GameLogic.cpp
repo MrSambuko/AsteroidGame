@@ -75,6 +75,16 @@ void GameLogic::handleKeyReleased( sf::Keyboard::Key key ) const
 	}
 }
 
+void GameLogic::handleMousePressedEvent(sf::Mouse::Button button) const
+{
+	player_->startShooting();
+}
+
+void GameLogic::handleMouseReleasedEvent(sf::Mouse::Button button) const
+{
+	player_->stopShooting();
+}
+
 void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObjectType type)
 {
 	switch (type)
