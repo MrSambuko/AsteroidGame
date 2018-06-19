@@ -22,23 +22,23 @@ public:
 	static sf::Vector2f generateRandomVelocity(const sf::Vector2f& position, float speed);
 	sf::Vector2f generateRandomPositionOutsideBounds() const;
 	
-	PhysicsBodyPtr createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position);
-	void destroyPhysicsBody(const PhysicsBodyPtr body);
+	PhysicsObjectPtr createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position);
+	void destroyPhysicsBody(const PhysicsObjectPtr body);
 
 	void setCollistionCallback(const CollisionCallback& callback)
 	{
 		callback_ = callback;
 	}
 
-	int update();
+	int update(float dt);
 
 private:
 	void updateCollisions();
-	void updatePositions();
+	void updatePositions(float dt);
 
 private:
 	float width_, height_;
 	CollisionCallback callback_;
-	std::unordered_set<PhysicsBodyPtr> bodies_;
-	std::vector<PhysicsBodyPtr> bodiesToDestroy_;
+	std::unordered_set<PhysicsObjectPtr> bodies_;
+	std::vector<PhysicsObjectPtr> bodiesToDestroy_;
 };

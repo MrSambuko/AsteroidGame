@@ -30,7 +30,7 @@ Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 	}*/
 }
 
-void Scenario::update(const sf::Time& dt)
+void Scenario::update( float dt )
 {
 	const int curAsteroids = gameLogic_->getNumOfAsteroids();
 

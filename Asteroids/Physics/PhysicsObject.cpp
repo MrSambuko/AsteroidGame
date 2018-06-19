@@ -1,4 +1,4 @@
-#include "SFML/Graphics/ConvexShape.hpp"
+#include "SFML/Graphics/CircleShape.hpp"
 
 #include "GameLogic\GameLogicObject.hpp"
 #include "Physics.hpp"
@@ -15,9 +15,9 @@ PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, con
 {
 }
 
-void PhysicsObject::move()
+void PhysicsObject::move(const float& dt)
 {
-	position_ += velocity_;
+	position_ += velocity_ * dt;
 
 	const auto& bounds = physics_->getBounds();
 	if (position_.x < 0 || position_.y < 0 || position_.x > bounds.x || position_.y > bounds.y)
@@ -29,8 +29,7 @@ void PhysicsObject::move()
 			break;
 
 		case PY::BOUNCE:
-			position_.x = -position_.x;
-			position_.y = -position_.y;
+			reverseVelocity();
 			break;
 
 		default:
@@ -38,7 +37,7 @@ void PhysicsObject::move()
 		}
 	}
 
-
+	shape_->setPosition(position_);
 }
 
 void PhysicsObject::reverseVelocity()
@@ -54,13 +53,14 @@ bool PhysicsObject::intersects(const PhysicsObject& other) const
 }
 
 PlayerPhysicsObject::PlayerPhysicsObject( Physics* physics, GameLogicObject* logicObject) :
-	PhysicsObject(physics, logicObject, {.0f, .0f}, PY::KEEP)
+	PhysicsObject(physics, logicObject, {physics->getBounds().x/2, physics->getBounds().y/2}, PY::KEEP)
 {
-	shape_ = std::make_unique<sf::ConvexShape>(3);
+	shape_ = std::make_shared<sf::CircleShape>(10.f, 256);
+	shape_->setFillColor(sf::Color::Red);
 }
 
 AsteroidPhysicsObject::AsteroidPhysicsObject( Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position ) :
-	PhysicsObject(physics, logicObject, position, PY::DESTROY)
+	PhysicsObject(physics, logicObject, position, PY::BOUNCE)
 {
-	shape_ = std::make_unique<sf::CircleShape>(5.f);
+	shape_ = std::make_shared<sf::CircleShape>(25.f, 256);
 }

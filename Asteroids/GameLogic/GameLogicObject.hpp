@@ -27,9 +27,11 @@ public:
 	constexpr void markForDestruction() { shouldDestroy_ = true; }
 	constexpr bool shouldDestroy() const { return shouldDestroy_; }
 	constexpr GL::GameLogicObjectType getType() const { return type_; }
+
+	PhysicsObjectPtr getPhysicalObject() const { return physicsObject_; }
 protected:
 	GameLogic * gameLogic_;
-	PhysicsBodyPtr physicsBody_;
+	PhysicsObjectPtr physicsObject_;
 
 	bool shouldDestroy_ = false;
 	GL::GameLogicObjectType type_;

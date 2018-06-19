@@ -4,7 +4,6 @@
 #include <unordered_set>
 #include <unordered_map>
 
-#include "SFML\System\Time.hpp"
 #include "SFML\System\Vector2.hpp"
 
 #include "GameLogicObject.hpp"
@@ -28,7 +27,7 @@ public:
 	explicit GameLogic(Scenario&& scenario, Physics* physics);
 
 	void init();
-	int update(const sf::Time& dt);
+	int update( float dt );
 
 	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
 	Physics* getPhysics() const { return physics_; }
@@ -36,6 +35,8 @@ public:
 	constexpr int getNumOfAsteroids() const { return numAsteroids_; }
 	constexpr int getNumOfBosses() const { return numBosses_; }
 	constexpr int getScore() const { return score_; }
+
+	const std::unordered_set<GameLogicObjectPtr>& getObjects() const { return objects_; }
 
 private:
 	void destroyObjects();

@@ -24,7 +24,7 @@ public:
 	explicit Scenario(const std::string& fileName);
 
 	void start() { asteroidSpawnTimer_.restart(); }
-	void update(const sf::Time& dt);
+	void update( float dt );
 
 	void setGameLogic(GameLogic* gameLogic) { gameLogic_ = gameLogic; }
 	void setCurrentLevel(int level) { currentScenario_ = scenarios_[level]; }

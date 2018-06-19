@@ -13,7 +13,7 @@ GameLogic::GameLogic(Scenario&& scenario, Physics* physics) :
 {
 }
 
-int GameLogic::update(const sf::Time& dt)
+int GameLogic::update( float dt )
 {
 	scenario_.update(dt);
 	destroyObjects();

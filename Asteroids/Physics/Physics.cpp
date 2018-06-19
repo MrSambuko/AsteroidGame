@@ -48,25 +48,25 @@ sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
 	switch (side)
 	{
 	case UP:
-		return {xDistribution(generator), height_ + OFFSET};
+		return {xDistribution(generator), height_ - OFFSET};
 	case DOWN:
-		return {xDistribution(generator), -OFFSET};
+		return {xDistribution(generator), OFFSET};
 	case RIGHT:
-		return {width_ + OFFSET, yDistribution(generator)};
+		return {width_ - OFFSET, yDistribution(generator)};
 	case LEFT:
-		return {-OFFSET, yDistribution(generator)};
+		return {OFFSET, yDistribution(generator)};
 	default:
 		assert(false);
 		return {};
 	}
 }
 
-PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position)
+PhysicsObjectPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position)
 {
 	const auto type = obj->getType();
 	const auto strategy = LeaveLogicTypeToStrategy[obj->getType()];
 
-	PhysicsBodyPtr ptr = nullptr;
+	PhysicsObjectPtr ptr = nullptr;
 
 	switch (type)
 	{
@@ -85,14 +85,14 @@ PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector
 	return ptr;
 }
 
-void Physics::destroyPhysicsBody( const PhysicsBodyPtr body )
+void Physics::destroyPhysicsBody( const PhysicsObjectPtr body )
 {
 	bodiesToDestroy_.push_back(body);
 }
 
-int Physics::update()
+int Physics::update(float dt)
 {
-	updatePositions();
+	updatePositions(dt);
 	updateCollisions();
 
 	while (!bodiesToDestroy_.empty())
@@ -108,7 +108,7 @@ int Physics::update()
 
 void Physics::updateCollisions()
 {
-	std::vector<PhysicsBodyPtr> bodies(bodies_.begin(), bodies_.end());
+	std::vector<PhysicsObjectPtr> bodies(bodies_.begin(), bodies_.end());
 	const auto s = bodies.size();
 
 	for (size_t i = 0; i < s-1; ++i)
@@ -127,9 +127,9 @@ void Physics::updateCollisions()
 	}
 }
 
-void Physics::updatePositions()
+void Physics::updatePositions(float dt)
 {
 	for (const auto& body : bodies_)
-		body->move();
+		body->move(dt);
 }
 

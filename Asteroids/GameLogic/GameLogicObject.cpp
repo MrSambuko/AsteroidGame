@@ -6,12 +6,12 @@ GameLogicObject::GameLogicObject(GameLogic* logic, const sf::Vector2f& position,
 	gameLogic_(logic),
 	type_(type)
 {
-	physicsBody_ = gameLogic_->getPhysics()->createPhysicsBody(this, position);
+	physicsObject_ = gameLogic_->getPhysics()->createPhysicsBody(this, position);
 }
 
 GameLogicObject::~GameLogicObject()
 {
-	gameLogic_->getPhysics()->destroyPhysicsBody(physicsBody_);
+	gameLogic_->getPhysics()->destroyPhysicsBody(physicsObject_);
 }
 
 
@@ -19,5 +19,5 @@ GameLogicObject::~GameLogicObject()
 AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :
 	GameLogicObject(logic, logic->getPhysics()->generateRandomPositionOutsideBounds(), GL::ASTEROID)
 {
-	physicsBody_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsBody_->getPosition(), 5.f));
+	physicsObject_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsObject_->getPosition(), 50.f));
 }

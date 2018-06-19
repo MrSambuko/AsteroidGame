@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "SFML\System\Vector2.hpp"
-#include "SFML\Graphics\Shape.hpp"
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Graphics/Shape.hpp"
 #include <unordered_map>
 
 class Physics;
@@ -27,12 +27,13 @@ public:
 	PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy);
 	constexpr GameLogicObject* getLogicObject() const { return logicObject_; }
 
-	void move();
+	void move(const float& dt);
 	void reverseVelocity();
 	void setVelocity(const sf::Vector2f&& newVelocity) { velocity_ = newVelocity; }
 	bool intersects(const PhysicsObject& other) const;
 
 	const sf::Vector2f& getPosition() const { return position_; }
+	std::shared_ptr<sf::Shape> getShape() const { return shape_; }
 protected:
 	Physics * physics_;
 	GameLogicObject* logicObject_;
@@ -43,9 +44,9 @@ protected:
 	sf::Vector2f position_;
 	sf::Vector2f velocity_;
 
-	std::unique_ptr<sf::Shape> shape_;
+	std::shared_ptr<sf::Shape> shape_;
 };
-using PhysicsBodyPtr = std::shared_ptr<PhysicsObject>;
+using PhysicsObjectPtr = std::shared_ptr<PhysicsObject>;
 
 
 class PlayerPhysicsObject : public PhysicsObject

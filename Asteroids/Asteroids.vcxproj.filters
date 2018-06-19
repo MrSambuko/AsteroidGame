@@ -17,6 +17,9 @@
     <ClCompile Include="GameLogic\Scenario.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="Render\Render.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -27,6 +30,9 @@
     </Filter>
     <Filter Include="Resources">
       <UniqueIdentifier>{987a33c9-67f4-42a7-9ca4-825a01517605}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Render">
+      <UniqueIdentifier>{ffa9c345-51d5-4837-80b3-8b2fbcfd5a3b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +52,9 @@
       <Filter>GameLogic</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Render\Render.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="GameLogic\scenarios.ini">
