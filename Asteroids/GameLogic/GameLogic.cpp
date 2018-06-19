@@ -44,7 +44,7 @@ void GameLogic::init()
 		{
 			this->onBodiesCollision(body1, body2);
 		});
-	player_ = std::make_shared<GameLogicObject>(this, sf::Vector2f(.0f, .0f), GL::PLAYER);
+	player_ = std::make_shared<PlayerGameLogicObject>(this);
 	objects_.insert(player_);
 	scenario_.setGameLogic(this);
 	scenario_.setCurrentLevel(0);

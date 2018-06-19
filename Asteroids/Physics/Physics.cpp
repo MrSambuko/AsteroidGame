@@ -61,9 +61,26 @@ sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
 	}
 }
 
-PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy)
+PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position)
 {
-	auto ptr = std::make_shared<PhysicsObject>( this, obj, std::move(position), strategy );
+	const auto type = obj->getType();
+	const auto strategy = LeaveLogicTypeToStrategy[obj->getType()];
+
+	PhysicsBodyPtr ptr = nullptr;
+
+	switch (type)
+	{
+	case GL::ASTEROID:
+		ptr = std::make_shared<AsteroidPhysicsObject>( this, obj, position );
+		break;
+
+	case GL::PLAYER:
+		ptr = std::make_shared<PlayerPhysicsObject>(this, obj);
+		break;
+
+	default: break;
+	}
+	
 	bodies_.insert(ptr);
 	return ptr;
 }
@@ -94,7 +111,7 @@ void Physics::updateCollisions()
 	std::vector<PhysicsBodyPtr> bodies(bodies_.begin(), bodies_.end());
 	const auto s = bodies.size();
 
-	for (size_t i = 0; i < s; ++i)
+	for (size_t i = 0; i < s-1; ++i)
 	{
 		for (size_t j = i+1; j < s; ++j)
 		{

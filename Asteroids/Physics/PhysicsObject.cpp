@@ -1,5 +1,4 @@
-#include <math.h>
-#include <random>
+#include "SFML/Graphics/ConvexShape.hpp"
 
 #include "GameLogic\GameLogicObject.hpp"
 #include "Physics.hpp"
@@ -7,16 +6,13 @@
 #include "PhysicsObject.hpp"
 
 
-
-
-PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f&& position, PY::LeaveFieldStrategy strategy) :
+PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy) :
 	physics_(physics),
 	logicObject_(logicObject),
 	strategy_(strategy),
-	position_(position)
+	position_(position),
+	shape_(nullptr)
 {
-	shape_.setPosition(position);
-	shape_.setRadius(10);
 }
 
 void PhysicsObject::move()
@@ -54,5 +50,17 @@ void PhysicsObject::reverseVelocity()
 
 bool PhysicsObject::intersects(const PhysicsObject& other) const
 {
-	return shape_.getGlobalBounds().intersects(other.shape_.getGlobalBounds());
+	return shape_->getGlobalBounds().intersects(other.shape_->getGlobalBounds());
+}
+
+PlayerPhysicsObject::PlayerPhysicsObject( Physics* physics, GameLogicObject* logicObject) :
+	PhysicsObject(physics, logicObject, {.0f, .0f}, PY::KEEP)
+{
+	shape_ = std::make_unique<sf::ConvexShape>(3);
+}
+
+AsteroidPhysicsObject::AsteroidPhysicsObject( Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position ) :
+	PhysicsObject(physics, logicObject, position, PY::DESTROY)
+{
+	shape_ = std::make_unique<sf::CircleShape>(5.f);
 }

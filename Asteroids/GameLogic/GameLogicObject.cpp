@@ -6,13 +6,14 @@ GameLogicObject::GameLogicObject(GameLogic* logic, const sf::Vector2f& position,
 	gameLogic_(logic),
 	type_(type)
 {
-	physicsBody_ = gameLogic_->getPhysics()->createPhysicsBody(this, position, LeaveLogicTypeToStrategy[type]);
+	physicsBody_ = gameLogic_->getPhysics()->createPhysicsBody(this, position);
 }
 
 GameLogicObject::~GameLogicObject()
 {
 	gameLogic_->getPhysics()->destroyPhysicsBody(physicsBody_);
 }
+
 
 
 AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :

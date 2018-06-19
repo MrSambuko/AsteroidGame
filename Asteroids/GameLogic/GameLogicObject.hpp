@@ -37,6 +37,12 @@ protected:
 using GameLogicObjectPtr = std::shared_ptr<GameLogicObject>;
 
 
+class PlayerGameLogicObject : public GameLogicObject
+{
+public:
+	PlayerGameLogicObject(GameLogic* logic) : GameLogicObject(logic, {}, GL::PLAYER) {}
+};
+
 class AsteroidGameLogicObject : public GameLogicObject
 {
 public:

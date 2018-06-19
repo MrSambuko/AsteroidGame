@@ -63,6 +63,6 @@ ScenarioDetails Scenario::getScenarioDetails(int level)
 
 void Scenario::spawnAsteroid()
 {
-	gameLogic_->createGameObject({ .0f, .0f }, GL::ASTEROID);
+	gameLogic_->createGameObject({}, GL::ASTEROID);
 	asteroidSpawnTimer_.restart();
 }
