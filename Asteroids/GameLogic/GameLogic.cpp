@@ -1,6 +1,6 @@
 #include "SFML/Window/Mouse.hpp"
 
-#include "Physics\Physics.hpp"
+#include "Physics/Physics.hpp"
 
 #include "Scenario.hpp"
 #include "GameLogic.hpp"
@@ -52,7 +52,7 @@ void GameLogic::handleKeyPressed( sf::Keyboard::Key key ) const
 	}
 }
 
-void GameLogic::handleKeyReleased( sf::Keyboard::Key key )
+void GameLogic::handleKeyReleased( sf::Keyboard::Key key ) const
 {
 	switch (key)
 	{
@@ -134,6 +134,9 @@ void GameLogic::destroyObjects()
 		case GL::PLAYER:
 			player_ = nullptr;
 			break;
+
+		default:
+			break;
 		}
 		objectsToDestroy.pop_back();
 		objects_.erase(object);
@@ -180,7 +183,7 @@ void GameLogic::handlePlayerShooting()
 	}
 }
 
-void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
+void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2) const
 {
 	// if any of the objects is player - game is over
 	const auto& b1Type = body1.getLogicObject()->getType();
@@ -193,7 +196,7 @@ void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 	}
 	else
 	{
-		if (b1Type == GL::PROJECTILE && b2Type == GL::ASTEROID || b1Type == GL::ASTEROID && b2Type == GL::PROJECTILE)
+		if ((b1Type == GL::PROJECTILE && b2Type == GL::ASTEROID) || (b1Type == GL::ASTEROID && b2Type == GL::PROJECTILE))
 		{
 			body1.getLogicObject()->markForDestruction();
 			body2.getLogicObject()->markForDestruction();

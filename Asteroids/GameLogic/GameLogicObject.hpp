@@ -48,7 +48,7 @@ static std::unordered_map<int, sf::Vector2f> moveToVectorMap =
 	{LEFT,	sf::Vector2f(-1.0f,   .0f)*PLAYER_SPEED}
 };
 
-constexpr static float SHOOT_INTERVAL = 5.f;
+constexpr static float SHOOT_INTERVAL = 1.f;
 }
 
 class GameLogicObject

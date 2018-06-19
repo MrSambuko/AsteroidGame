@@ -35,7 +35,7 @@ public:
 	int update( float dt );
 
 	void handleKeyPressed(sf::Keyboard::Key key) const;
-	void handleKeyReleased(sf::Keyboard::Key key);
+	void handleKeyReleased(sf::Keyboard::Key key) const;
 
 	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
 	Physics* getPhysics() const { return physics_; }
@@ -52,7 +52,7 @@ private:
 	void handlePlayerShooting();
 	void destroyObjects();
 
-	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2);
+	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2) const;
 
 private:
 	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
