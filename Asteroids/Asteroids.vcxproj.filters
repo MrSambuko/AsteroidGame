@@ -61,4 +61,9 @@
       <Filter>Resources</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <Font Include="sansation.ttf">
+      <Filter>Resources</Filter>
+    </Font>
+  </ItemGroup>
 </Project>

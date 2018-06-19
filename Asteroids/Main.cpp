@@ -23,11 +23,7 @@ enum GameState
 class Game final
 {
 public:
-	Game(sf::RenderWindow* window) : window_(window), gameState_(MENU) {}
-	~Game()
-	{
-
-	}
+	Game(sf::RenderWindow* window) : window_(window), gameState_(MENU) { prepareMenu(); }
 
 	void update() 
 	{
@@ -35,9 +31,11 @@ public:
 		{
 		case MENU:
 			updateMenuLogic();
+			break;
 
 		case GAMEPLAY:
 			updateGameplayLogic();
+			break;
 		}
 	}
 
@@ -46,25 +44,50 @@ public:
 		switch (gameState_)
 		{
 		case MENU:
+			updateMenuEvent(event);
 			break;
 
 		case GAMEPLAY:
 			updateGameplayEvent(event);
+			break;
 		}
 	}
 
 private:
+	void prepareMenu()
+	{
+		render_ = std::make_shared < MenuRender >(window_);
+	}
+
 	void prepareGameplay()
 	{
 		Scenario scenario("scenarios.ini");
 		physics_ = std::make_shared<Physics>(static_cast<float>(WIDTH), static_cast<float>(HEIGHT));
 		gameLogic_ = std::make_shared<GameLogic>(window_, std::move(scenario), physics_.get());
-		render_ = std::make_shared<Render>(gameLogic_.get(), window_);
+		render_ = std::make_shared<GameplayRender>(gameLogic_.get(), window_);
 		gameLogic_->init();
 
 		start_ = std::chrono::steady_clock::now();
 	}
 
+	void updateMenuEvent(const sf::Event& event)
+	{
+		if (event.type == sf::Event::MouseButtonPressed)
+		{
+			auto result = dynamic_cast<MenuRender*>(render_.get())->handleMouseButton();
+
+			switch (result)
+			{
+			case START:
+				gameState_ = GAMEPLAY;
+				prepareGameplay();
+				break;
+
+			case EXIT:
+				window_->close();
+			}
+		}
+	}
 
 	void updateGameplayEvent(const sf::Event& event)
 	{
@@ -74,13 +97,13 @@ private:
 			gameLogic_->handleKeyReleased(event.key.code);
 		if (event.type == sf::Event::MouseButtonPressed)
 			gameLogic_->handleMousePressedEvent(event.mouseButton.button);
-		else if (event.type == sf::Event::KeyReleased)
+		else if (event.type == sf::Event::MouseButtonReleased)
 			gameLogic_->handleMouseReleasedEvent(event.mouseButton.button);
 	}
 
 	void updateMenuLogic()
 	{
-		render_
+		render_->update();
 	}
 
 	void updateGameplayLogic()
@@ -100,7 +123,9 @@ private:
 
 	std::shared_ptr<GameLogic> gameLogic_;
 	std::shared_ptr<Physics> physics_;
-	std::shared_ptr<Render> render_;
+	std::shared_ptr<BaseRender> render_;
+
+
 
 	std::chrono::time_point<std::chrono::steady_clock> start_;
 };
