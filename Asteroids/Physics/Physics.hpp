@@ -19,6 +19,7 @@ public:
 	Physics(float width, float height) : width_(width), height_(height) {}
 
 	sf::Vector2f getBounds() const { return {width_, height_}; }
+	sf::FloatRect getRectBounds() const { return {{.0f, .0f}, {width_, height_}}; }
 	static sf::Vector2f generateRandomVelocity(const sf::Vector2f& position, float speed);
 	sf::Vector2f generateRandomPositionOutsideBounds() const;
 	

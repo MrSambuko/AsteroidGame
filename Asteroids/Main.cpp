@@ -34,6 +34,11 @@ int main()
 		{
 			if (event.type == sf::Event::Closed)
 				window.close();
+
+			if (event.type == sf::Event::KeyPressed)
+				logic.handleKeyPressed(event.key.code);
+			else if (event.type == sf::Event::KeyReleased)
+				logic.handleKeyReleased(event.key.code);
 		}
 		
 		window.clear();

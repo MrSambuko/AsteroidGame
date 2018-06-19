@@ -15,9 +15,61 @@ GameLogic::GameLogic(Scenario&& scenario, Physics* physics) :
 
 int GameLogic::update( float dt )
 {
+	// move player
+	sf::Vector2f velocity;
+	if (player_->isMoving())
+	{
+		const auto& playerMoveDirection = player_->getMoveDirection();
+		for (const auto& pair : GL::moveToVectorMap)
+		{
+			if (playerMoveDirection & pair.first)
+				velocity += pair.second;
+		}
+		
+	}
+	player_->getPhysicalObject()->setVelocity(std::move(velocity));
+
 	scenario_.update(dt);
 	destroyObjects();
 	return 0;
+}
+
+void GameLogic::handleKeyPressed( sf::Keyboard::Key key ) const
+{
+	switch (key)
+	{
+	case sf::Keyboard::A:
+	case sf::Keyboard::W:
+	case sf::Keyboard::D:
+	case sf::Keyboard::S:
+	{
+		const auto& direction = GL::keyToDirectionMap[key];
+		player_->startMoving(direction);
+		break;
+	}
+
+	default: 
+		break;
+	}
+}
+
+void GameLogic::handleKeyReleased( sf::Keyboard::Key key )
+{
+	switch (key)
+	{
+	case sf::Keyboard::A:
+	case sf::Keyboard::W:
+	case sf::Keyboard::D:
+	case sf::Keyboard::S:
+	{
+		const auto& direction = GL::keyToDirectionMap[key];
+		player_->stopMoving(direction);
+		break;
+	}
+
+	default: 
+		break;
+	}
 }
 
 void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObjectType type)
@@ -75,7 +127,6 @@ void GameLogic::onBodiesCollision(const PhysicsObject& body1, const PhysicsObjec
 	if (body1.getLogicObject()->getType() == GL::PLAYER || body2.getLogicObject()->getType() == GL::PLAYER)
 	{
 		player_->markForDestruction();
-		player_ = nullptr;
 	}
 	return;
 }

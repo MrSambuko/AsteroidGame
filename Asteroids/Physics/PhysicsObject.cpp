@@ -29,7 +29,10 @@ void PhysicsObject::move(const float& dt)
 			break;
 
 		case PY::BOUNCE:
-			reverseVelocity();
+			if (position_.x < 0 || position_.x > bounds.x)
+				velocity_.x = -velocity_.x;
+			if (position_.y < 0 || position_.y > bounds.y)
+				velocity_.y = -velocity_.y;
 			break;
 
 		default:

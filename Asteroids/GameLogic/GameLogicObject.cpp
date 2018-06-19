@@ -19,5 +19,5 @@ GameLogicObject::~GameLogicObject()
 AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :
 	GameLogicObject(logic, logic->getPhysics()->generateRandomPositionOutsideBounds(), GL::ASTEROID)
 {
-	physicsObject_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsObject_->getPosition(), 50.f));
+	physicsObject_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsObject_->getPosition(), GL::ASTEROID_SPEED));
 }

@@ -8,6 +8,7 @@
 
 #include "GameLogicObject.hpp"
 #include "Scenario.hpp"
+#include <SFML/Window/Keyboard.hpp>
 
 class Physics;
 
@@ -29,6 +30,9 @@ public:
 	void init();
 	int update( float dt );
 
+	void handleKeyPressed(sf::Keyboard::Key key) const;
+	void handleKeyReleased(sf::Keyboard::Key key);
+
 	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
 	Physics* getPhysics() const { return physics_; }
 
@@ -44,7 +48,7 @@ private:
 	void onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2);
 
 private:
-	GameLogicObjectPtr player_ = nullptr;
+	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
 
 	std::unordered_set<GameLogicObjectPtr> objects_;
 	int score_ = 0;
