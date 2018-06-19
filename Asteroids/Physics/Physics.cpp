@@ -1,11 +1,67 @@
+#include <cassert>
+#include <random>
+
 #include "GameLogic/GameLogic.hpp"
 
 #include "Physics.hpp"
 
 
+namespace
+{
+	constexpr float PI = 3.14159265358979323846f;
+	std::default_random_engine generator;
+	std::uniform_int_distribution<int> angleDistribution(-45, 45);
+	auto getAngle = [](){ return angleDistribution(generator) * PI / 180.f; };
+
+	sf::Vector2f normalizeVector(const sf::Vector2f& vector)
+	{
+		const float length = sqrt(vector.x*vector.x + vector.y*vector.y);
+		return {vector.x/length, vector.y/length};
+	}
 
 
-PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, LeaveFieldStrategy strategy)
+	enum Side
+	{
+		UP,
+		RIGHT,
+		DOWN,
+		LEFT
+	};
+}
+
+sf::Vector2f Physics::generateRandomVelocity( const sf::Vector2f& position, float speed )
+{
+	// velocity is chosen in 90 degree arc towards center
+	const float angle = getAngle();
+	const auto directionToCenter = normalizeVector({-position.x, -position.y});
+	return sf::Vector2f(cos(angle)*directionToCenter.x - sin(angle)*directionToCenter.y, sin(angle)*directionToCenter.x + cos(angle)*directionToCenter.y ) * speed;
+}
+
+sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
+{
+	constexpr static float OFFSET = 20.f;
+	static std::uniform_int_distribution<int> sideChoiceDistr(0, 3);
+	static std::uniform_real<float> xDistribution(0, width_);
+	static std::uniform_real<float> yDistribution(0, height_);
+	int side = sideChoiceDistr(generator);
+
+	switch (side)
+	{
+	case UP:
+		return {xDistribution(generator), height_ + OFFSET};
+	case DOWN:
+		return {xDistribution(generator), -OFFSET};
+	case RIGHT:
+		return {width_ + OFFSET, yDistribution(generator)};
+	case LEFT:
+		return {-OFFSET, yDistribution(generator)};
+	default:
+		assert(false);
+		return {};
+	}
+}
+
+PhysicsBodyPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy)
 {
 	auto ptr = std::make_shared<PhysicsObject>( this, obj, std::move(position), strategy );
 	bodies_.insert(ptr);

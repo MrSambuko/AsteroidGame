@@ -7,8 +7,7 @@
 
 
 
-GameLogic::GameLogic(const Scenario& scenario, Physics* physics) :
-	player_(nullptr),
+GameLogic::GameLogic(Scenario&& scenario, Physics* physics) :
 	scenario_(scenario),
 	physics_(physics)
 {
@@ -21,17 +20,18 @@ int GameLogic::update(const sf::Time& dt)
 	return 0;
 }
 
-void GameLogic::createGameObject(const sf::Vector2f & position, GameLogicObjectType type)
+void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObjectType type)
 {
-	objects_.insert(std::make_shared<GameLogicObject>(this, position, type));
-
 	switch (type)
 	{
-	case ASTEROID: 
+	case GL::ASTEROID:
+		objects_.insert(std::make_shared<AsteroidGameLogicObject>(this));
 		++numAsteroids_;
 		break;
-	case BOSS:
+	case GL::BOSS:
 		++numBosses_;
+		break;
+	default:
 		break;
 	};
 }
@@ -44,7 +44,7 @@ void GameLogic::init()
 		{
 			this->onBodiesCollision(body1, body2);
 		});
-	player_ = std::make_shared<GameLogicObject>(this, sf::Vector2f(.0f, .0f), PLAYER);
+	player_ = std::make_shared<GameLogicObject>(this, sf::Vector2f(.0f, .0f), GL::PLAYER);
 	objects_.insert(player_);
 	scenario_.setGameLogic(this);
 	scenario_.setCurrentLevel(0);
@@ -72,7 +72,7 @@ void GameLogic::destroyObjects()
 void GameLogic::onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2)
 {
 	// if any of the objects is player - game is over
-	if (body1.getLogicObject()->getType() == PLAYER || body2.getLogicObject()->getType() == PLAYER)
+	if (body1.getLogicObject()->getType() == GL::PLAYER || body2.getLogicObject()->getType() == GL::PLAYER)
 	{
 		player_->markForDestruction();
 		player_ = nullptr;

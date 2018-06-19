@@ -7,7 +7,8 @@
 
 class GameLogic;
 
-
+namespace GL
+{
 enum GameLogicObjectType
 {
 	PLAYER,
@@ -15,23 +16,29 @@ enum GameLogicObjectType
 	PROJECTILE,
 	BOSS,
 };
+};
 
-
-
-class GameLogicObject final
+class GameLogicObject
 {
 public:
-	GameLogicObject(GameLogic* logic, const sf::Vector2f& position, GameLogicObjectType type);
+	GameLogicObject(GameLogic* logic, const sf::Vector2f& position, GL::GameLogicObjectType type);
 	~GameLogicObject();
 
 	constexpr void markForDestruction() { shouldDestroy_ = true; }
 	constexpr bool shouldDestroy() const { return shouldDestroy_; }
-	constexpr GameLogicObjectType getType() const { return type_; }
-private:
+	constexpr GL::GameLogicObjectType getType() const { return type_; }
+protected:
 	GameLogic * gameLogic_;
 	PhysicsBodyPtr physicsBody_;
 
 	bool shouldDestroy_ = false;
-	GameLogicObjectType type_;
+	GL::GameLogicObjectType type_;
 };
 using GameLogicObjectPtr = std::shared_ptr<GameLogicObject>;
+
+
+class AsteroidGameLogicObject : public GameLogicObject
+{
+public:
+	AsteroidGameLogicObject(GameLogic* logic);
+};

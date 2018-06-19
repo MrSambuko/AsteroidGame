@@ -12,25 +12,25 @@
 
 class Physics;
 
-static std::unordered_map<GameLogicObjectType, LeaveFieldStrategy> LogicTypeToStrategy = 
-{
-	{PLAYER, KEEP},
-	{ASTEROID, DESTROY},
-	{PROJECTILE, DESTROY},
-	{BOSS, KEEP}
-};
 
+static std::unordered_map< GL::GameLogicObjectType, PY::LeaveFieldStrategy> LeaveLogicTypeToStrategy = 
+{
+	{GL::PLAYER, PY::KEEP},
+	{GL::ASTEROID, PY::DESTROY},
+	{GL::PROJECTILE, PY::DESTROY},
+	{GL::BOSS, PY::KEEP}
+};
 
 
 class GameLogic final
 {
 public:
-	explicit GameLogic(const Scenario& scenario, Physics* physics);
+	explicit GameLogic(Scenario&& scenario, Physics* physics);
 
 	void init();
 	int update(const sf::Time& dt);
 
-	void createGameObject(const sf::Vector2f& position, GameLogicObjectType type);
+	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
 	Physics* getPhysics() const { return physics_; }
 
 	constexpr int getNumOfAsteroids() const { return numAsteroids_; }
@@ -43,14 +43,14 @@ private:
 	void onBodiesCollision(const PhysicsObject& body1, const PhysicsObject& body2);
 
 private:
-	GameLogicObjectPtr player_;
+	GameLogicObjectPtr player_ = nullptr;
 
 	std::unordered_set<GameLogicObjectPtr> objects_;
-	int score_;
-	int numAsteroids_;
-	int numBosses_;
+	int score_ = 0;
+	int numAsteroids_ = 0;
+	int numBosses_ = 0;
 
 	Scenario scenario_;
-	Physics* physics_;
+	Physics* physics_ = nullptr;
 
 };

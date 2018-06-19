@@ -1,4 +1,4 @@
-#include <assert.h>
+#include <cassert>
 #include <fstream>
 #include <regex>
 #include <string>
@@ -32,16 +32,37 @@ Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 
 void Scenario::update(const sf::Time& dt)
 {
-	auto elapsed = clock_.getElapsedTime();
+	const int curAsteroids = gameLogic_->getNumOfAsteroids();
 
-	int curAsteroids = gameLogic_->getNumOfAsteroids();
+	if (curAsteroids == 0)
+		spawnAsteroid();
+	else if (curAsteroids < currentScenario_.maxAsteroids)
+	{
+		const auto elapsed = asteroidSpawnTimer_.getElapsedTime();
+		if (elapsed.asSeconds() > currentScenario_.asteroidsInterval)
+			spawnAsteroid();
+	}
 
-	if (curAsteroids < currentScenario_.maxAsteroids)
-		gameLogic_->createGameObject({ .0f, .0f }, ASTEROID);
+	if (gameLogic_->getNumOfBosses() < currentScenario_.maxBosses)
+	{
+		const auto elapsed = bossSpawnTimer_.getElapsedTime();
+
+		if (elapsed.asSeconds() > currentScenario_.bossInterval)
+		{
+			gameLogic_->createGameObject({.0f, .0f}, GL::BOSS);
+			bossSpawnTimer_.restart();
+		}
+	}
 }
 
 ScenarioDetails Scenario::getScenarioDetails(int level)
 {
 	assert(scenarios_.find(level) != scenarios_.end());
 	return scenarios_[level];
+}
+
+void Scenario::spawnAsteroid()
+{
+	gameLogic_->createGameObject({ .0f, .0f }, GL::ASTEROID);
+	asteroidSpawnTimer_.restart();
 }

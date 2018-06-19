@@ -21,9 +21,9 @@ struct ScenarioDetails
 class Scenario final
 {
 public:
-	explicit Scenario(const std::string& filename);
+	explicit Scenario(const std::string& fileName);
 
-	void start() { clock_.restart(); }
+	void start() { asteroidSpawnTimer_.restart(); }
 	void update(const sf::Time& dt);
 
 	void setGameLogic(GameLogic* gameLogic) { gameLogic_ = gameLogic; }
@@ -31,7 +31,11 @@ public:
 	ScenarioDetails getScenarioDetails(int level);
 
 private:
-	sf::Clock clock_;
+	void spawnAsteroid();
+
+private:
+	sf::Clock asteroidSpawnTimer_;
+	sf::Clock bossSpawnTimer_;
 	GameLogic* gameLogic_;
 
 	std::unordered_map<int, ScenarioDetails> scenarios_;

@@ -1,3 +1,6 @@
+#include <math.h>
+#include <random>
+
 #include "GameLogic\GameLogicObject.hpp"
 #include "Physics.hpp"
 
@@ -5,7 +8,8 @@
 
 
 
-PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f&& position, LeaveFieldStrategy strategy) :
+
+PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f&& position, PY::LeaveFieldStrategy strategy) :
 	physics_(physics),
 	logicObject_(logicObject),
 	strategy_(strategy),
@@ -24,11 +28,11 @@ void PhysicsObject::move()
 	{
 		switch (strategy_)
 		{
-		case DESTROY:
+		case PY::DESTROY:
 			logicObject_->markForDestruction();
 			break;
 
-		case BOUNCE:
+		case PY::BOUNCE:
 			position_.x = -position_.x;
 			position_.y = -position_.y;
 			break;
@@ -46,6 +50,7 @@ void PhysicsObject::reverseVelocity()
 	velocity_.x = -velocity_.x;
 	velocity_.y = -velocity_.y;
 }
+
 
 bool PhysicsObject::intersects(const PhysicsObject& other) const
 {

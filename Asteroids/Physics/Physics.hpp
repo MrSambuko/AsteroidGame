@@ -19,8 +19,10 @@ public:
 	Physics(float width, float height) : width_(width), height_(height) {}
 
 	sf::Vector2f getBounds() const { return {width_, height_}; }
+	static sf::Vector2f generateRandomVelocity(const sf::Vector2f& position, float speed);
+	sf::Vector2f generateRandomPositionOutsideBounds() const;
 	
-	PhysicsBodyPtr createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, LeaveFieldStrategy strategy);
+	PhysicsBodyPtr createPhysicsBody(GameLogicObject* obj, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy);
 	void destroyPhysicsBody(const PhysicsBodyPtr body);
 
 	void setCollistionCallback(const CollisionCallback& callback)
