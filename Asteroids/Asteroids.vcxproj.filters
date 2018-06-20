@@ -17,7 +17,11 @@
     <ClCompile Include="GameLogic\Scenario.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="Render\Render.cpp">
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Render\MenuRender.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\GameplayRender.cpp">
       <Filter>Render</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,6 +57,13 @@
     </ClInclude>
     <ClInclude Include="resource.h" />
     <ClInclude Include="Render\Render.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.hpp" />
+    <ClInclude Include="Render\GameplayRender.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\MenuRender.hpp">
       <Filter>Render</Filter>
     </ClInclude>
   </ItemGroup>

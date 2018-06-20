@@ -1,13 +1,14 @@
 #pragma once
 
-#include "SFML\System\Vector2.hpp"
-
-#include "Physics\Physics.hpp"
-#include <SFML/Window/Keyboard.hpp>
 #include <chrono>
+#include <unordered_map>
+
+#include "SFML/System/Vector2.hpp"
+#include "SFML/Window/Keyboard.hpp"
+
+#include "Physics/Physics.hpp"
 
 
-class GameLogic;
 
 namespace GL
 {
@@ -51,6 +52,11 @@ static std::unordered_map<int, sf::Vector2f> moveToVectorMap =
 constexpr static float SHOOT_INTERVAL = 1.f;
 }
 
+
+
+class GameLogic;
+
+
 class GameLogicObject
 {
 public:
@@ -62,12 +68,20 @@ public:
 	constexpr GL::GameLogicObjectType getType() const { return type_; }
 
 	PhysicsObjectPtr getPhysicalObject() const { return physicsObject_; }
+
 protected:
-	GameLogic * gameLogic_;
-	PhysicsObjectPtr physicsObject_;
+	GameLogic* gameLogic_ = nullptr;
+	PhysicsObjectPtr physicsObject_  = nullptr;
 
 	bool shouldDestroy_ = false;
-	GL::GameLogicObjectType type_;
+	GL::GameLogicObjectType type_ = GL::PLAYER;
+
+private:
+	GameLogicObject(const GameLogicObject& ) = default;
+	GameLogicObject(const GameLogicObject&&) noexcept {}
+	const GameLogicObject& operator = (const GameLogicObject& ) const { return *this; }
+	const GameLogicObject& operator = (const GameLogicObject&& ) const { return *this; }
+
 };
 using GameLogicObjectPtr = std::shared_ptr<GameLogicObject>;
 

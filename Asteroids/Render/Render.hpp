@@ -1,56 +1,25 @@
 #pragma once
 
-#include <iostream>
-
-#include "SFML/Graphics/Font.hpp"
-#include <SFML/Graphics/RenderWindow.hpp>
-
+namespace sf
+{
+class RenderWindow;
+}
 
 class BaseRender
 {
 public:
 	BaseRender(sf::RenderWindow* window) : window_(window) {}
+	virtual ~BaseRender() = default;
 
 	virtual void update() = 0;
+
 protected:
 	sf::RenderWindow* window_;
-};
-
-
-enum MenuItem
-{
-	TITLE,
-	START,
-	EXIT
-};
-
-class MenuRender : public BaseRender
-{
-public:
-	MenuRender(sf::RenderWindow* window);
-	~MenuRender() {
-		std::cout << "Bingo!";
-	}
-	void update() override;
-
-	MenuItem handleMouseButton();
 
 private:
-	std::vector<sf::Text> menuItems_;
-	sf::Font font_;
+	BaseRender(const BaseRender& ) = default;
+	const BaseRender& operator = (const BaseRender& ) const { return *this; }
 };
 
 
 
-class GameLogic;
-
-class GameplayRender : public BaseRender
-{
-public:
-	GameplayRender( GameLogic* gameLogic, sf::RenderWindow* window) : BaseRender(window), gameLogic_(gameLogic) {}
-
-	void update() override;
-
-private:
-	GameLogic* gameLogic_;
-};

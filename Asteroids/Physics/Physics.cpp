@@ -43,7 +43,7 @@ sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
 	static std::uniform_int_distribution<int> sideChoiceDistr(0, 3);
 	static std::uniform_real<float> xDistribution(0, width_);
 	static std::uniform_real<float> yDistribution(0, height_);
-	int side = sideChoiceDistr(generator);
+	const int side = sideChoiceDistr(generator);
 
 	switch (side)
 	{

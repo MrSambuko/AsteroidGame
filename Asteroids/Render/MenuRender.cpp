@@ -1,24 +1,15 @@
-#include "SFML/Graphics/Text.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/Mouse.hpp"
 
-#include "GameLogic/GameLogic.hpp"
+#include "MenuRender.hpp"
 
-#include "Render.hpp"
 
-void GameplayRender::update()
-{
-	// get shapes
-	const auto& logicObjects = gameLogic_->getObjects();
 
-	for (const auto& object : logicObjects)
-	{
-		window_->draw(*object->getPhysicalObject()->getShape().get());
-	}
-}
 
 MenuRender::MenuRender(sf::RenderWindow * window) : BaseRender(window)
 {
 	font_.loadFromFile("sansation.ttf");
-	sf::Vector2f position(static_cast<float>(window_->getSize().x / 2), static_cast<float>(window_->getSize().y / 2));
+	sf::Vector2f position(window_->getSize().x * .5f, window_->getSize().y * .5f );
 
 	sf::Text text;
 	text.setFont(font_);

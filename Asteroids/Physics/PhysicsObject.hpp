@@ -4,10 +4,6 @@
 
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/Shape.hpp"
-#include <unordered_map>
-
-class Physics;
-class GameLogicObject;
 
 namespace PY
 {
@@ -19,6 +15,9 @@ enum LeaveFieldStrategy
 	KEEP
 };
 }
+
+class Physics;
+class GameLogicObject;
 
 
 class PhysicsObject

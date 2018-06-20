@@ -1,6 +1,6 @@
 #include "SFML/Graphics/CircleShape.hpp"
 
-#include "GameLogic\GameLogicObject.hpp"
+#include "GameLogic/GameLogicObject.hpp"
 #include "Physics.hpp"
 
 #include "PhysicsObject.hpp"
@@ -52,7 +52,7 @@ void PhysicsObject::reverseVelocity()
 
 void PhysicsObject::setDirection( const sf::Vector2f&& newDirection )
 {
-	direction_ = physics_->normalizeVector(std::move(newDirection));
+	direction_ = Physics::normalizeVector(std::move(newDirection));
 }
 
 bool PhysicsObject::intersects(const PhysicsObject& other) const

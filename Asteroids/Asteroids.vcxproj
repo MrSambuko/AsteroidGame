@@ -128,20 +128,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GameLogicObject.cpp" />
     <ClCompile Include="GameLogic\Scenario.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsObject.cpp" />
-    <ClCompile Include="Render\Render.cpp" />
+    <ClCompile Include="Render\GameplayRender.cpp" />
+    <ClCompile Include="Render\MenuRender.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameLogic\GameLogic.hpp" />
     <ClInclude Include="GameLogic\GameLogicObject.hpp" />
     <ClInclude Include="GameLogic\Scenario.hpp" />
     <ClInclude Include="Physics\Physics.hpp" />
     <ClInclude Include="Physics\PhysicsObject.hpp" />
+    <ClInclude Include="Render\GameplayRender.hpp" />
+    <ClInclude Include="Render\MenuRender.hpp" />
     <ClInclude Include="Render\Render.hpp" />
     <ClInclude Include="resource.h" />
   </ItemGroup>

@@ -1,11 +1,6 @@
-#include "SFML/Window/Mouse.hpp"
-
 #include "Physics/Physics.hpp"
 
-#include "Scenario.hpp"
 #include "GameLogic.hpp"
-
-
 
 
 GameLogic::GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics) :

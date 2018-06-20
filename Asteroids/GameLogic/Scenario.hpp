@@ -3,8 +3,7 @@
 #include <string>
 #include <unordered_map>
 
-#include "SFML\System\Clock.hpp"
-#include "SFML\System\Time.hpp"
+#include "SFML/System/Clock.hpp"
 
 class GameLogic;
 

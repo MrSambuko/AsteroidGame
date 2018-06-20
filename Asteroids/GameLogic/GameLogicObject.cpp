@@ -1,4 +1,5 @@
 #include "GameLogic.hpp"
+
 #include "GameLogicObject.hpp"
 
 
@@ -19,7 +20,7 @@ GameLogicObject::~GameLogicObject()
 AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :
 	GameLogicObject(logic, logic->getPhysics()->generateRandomPositionOutsideBounds(), GL::ASTEROID)
 {
-	physicsObject_->setVelocity(gameLogic_->getPhysics()->generateRandomVelocity(physicsObject_->getPosition(), GL::ASTEROID_SPEED));
+	physicsObject_->setVelocity(Physics::generateRandomVelocity(physicsObject_->getPosition(), GL::ASTEROID_SPEED));
 }
 
 ProjectileGameLogicObject::ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction): 

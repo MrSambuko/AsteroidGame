@@ -2,11 +2,10 @@
 
 #include <functional>
 #include <memory>
-#include <vector>
 #include <unordered_set>
+#include <vector>
 
-#include "SFML\System\Vector2.hpp"
-#include "SFML\Graphics\CircleShape.hpp"
+#include "SFML/System/Vector2.hpp"
 
 #include "PhysicsObject.hpp"
 

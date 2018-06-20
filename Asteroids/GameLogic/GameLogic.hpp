@@ -1,12 +1,9 @@
 #pragma once
 
 #include <memory>
-#include <unordered_set>
 #include <unordered_map>
+#include <unordered_set>
 
-
-#include "SFML/System/Vector2.hpp"
-#include "SFML/Window/Window.hpp"
 #include "SFML/Window/Keyboard.hpp"
 #include "SFML/Window/Mouse.hpp"
 
@@ -14,6 +11,10 @@
 #include "Scenario.hpp"
 
 
+namespace sf
+{
+class Window;
+}
 
 class Physics;
 
