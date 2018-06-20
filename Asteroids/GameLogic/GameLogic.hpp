@@ -27,6 +27,11 @@ static std::unordered_map< GL::GameLogicObjectType, PY::LeaveFieldStrategy> Leav
 	{GL::BOSS, PY::KEEP}
 };
 
+enum GameLogicState
+{
+	PLAYING,
+	GAME_OVER
+};
 
 class GameLogic final
 {
@@ -34,7 +39,7 @@ public:
 	explicit GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics);
 
 	void init();
-	int update( float dt );
+	GameLogicState update( float dt );
 
 	void handleKeyPressed(sf::Keyboard::Key key) const;
 	void handleKeyReleased(sf::Keyboard::Key key) const;

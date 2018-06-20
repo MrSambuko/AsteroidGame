@@ -10,7 +10,7 @@ GameLogic::GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics) 
 {
 }
 
-int GameLogic::update( float dt )
+GameLogicState GameLogic::update( float dt )
 {
 	// move player
 	rotatePlayer();
@@ -21,7 +21,10 @@ int GameLogic::update( float dt )
 
 	scenario_.update(dt);
 	destroyObjects();
-	return 0;
+
+	if (player_ == nullptr)
+		return GAME_OVER;
+	return PLAYING;
 }
 
 void GameLogic::handleKeyPressed( sf::Keyboard::Key key ) const

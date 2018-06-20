@@ -21,27 +21,21 @@ class Physics;
 class Game final
 {
 public:
-	Game(sf::RenderWindow* window) : window_(window), gameState_(MENU) { prepareMenu(); }
+	Game(sf::RenderWindow* window) : window_(window), gameState_(MENU) { switchState(MENU); }
+	~Game();
 
 	void update();
 
 	void updateEvent(const sf::Event& event);
 
 private:
-	void prepareMenu()
-	{
-		render_ = std::make_shared < MenuRender >(window_);
-	}
-
+	void switchState(GameState newState);
+	void prepareMenu();
 	void prepareGameplay();
+
 	void updateMenuEvent(const sf::Event& event);
 	void updateGameplayEvent(const sf::Event& event) const;
-
-	void updateMenuLogic() const
-	{
-		render_->update();
-	}
-
+	void updateMenuLogic() const;
 	void updateGameplayLogic();
 
 private:

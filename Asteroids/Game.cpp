@@ -5,6 +5,13 @@
 #include "Game.hpp"
 
 
+Game::~Game()
+{
+	render_ = nullptr;
+	gameLogic_ = nullptr;
+	physics_ = nullptr;
+}
+
 void Game::update() 
 {
 	switch (gameState_)
@@ -31,6 +38,28 @@ void Game::updateEvent(const sf::Event& event)
 		updateGameplayEvent(event);
 		break;
 	}
+}
+
+void Game::switchState( GameState newState )
+{
+	gameState_ = newState;
+	switch (newState)
+	{
+	case MENU:
+		prepareMenu();
+		break;
+
+	case GAMEPLAY:
+		prepareGameplay();
+		break;
+	}
+}
+
+void Game::prepareMenu()
+{
+	render_ = std::make_shared< MenuRender >(window_);
+	gameLogic_ = nullptr;
+	physics_ = nullptr;
 }
 
 
@@ -81,11 +110,20 @@ void Game::updateGameplayEvent(const sf::Event& event) const
 		gameLogic_->handleMouseReleasedEvent(event.mouseButton.button);
 }
 
+void Game::updateMenuLogic() const
+{
+	render_->update();
+}
+
 void Game::updateGameplayLogic()
 {
 	const auto& diffTime = std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::steady_clock::now() - start_);
 
-	gameLogic_->update(diffTime.count());
+	if (gameLogic_->update(diffTime.count()) == GAME_OVER)
+	{
+		switchState(MENU);
+		return;
+	}
 	physics_->update(diffTime.count());
 	render_->update();
 
