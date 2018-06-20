@@ -78,6 +78,9 @@
     <ClInclude Include="System\FileReader.hpp">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="System\Math.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="resources\sansation.ttf">

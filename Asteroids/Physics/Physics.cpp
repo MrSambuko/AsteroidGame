@@ -4,20 +4,18 @@
 #include "GameLogic/GameLogic.hpp"
 
 #include "Physics.hpp"
+#include "System/Math.hpp"
 
 
 namespace
 {
 	constexpr float PI = 3.14159265358979323846f;
-	std::default_random_engine generator;
+	std::random_device r;
+	std::default_random_engine generator{r()};
 	std::uniform_int_distribution<int> angleDistribution(-45, 45);
 	auto getAngle = [](){ return angleDistribution(generator) * PI / 180.f; };
 
-	sf::Vector2f normalizeVector(const sf::Vector2f& vector)
-	{
-		const float length = sqrt(vector.x*vector.x + vector.y*vector.y);
-		return {vector.x/length, vector.y/length};
-	}
+	
 
 
 	enum
@@ -109,11 +107,6 @@ int Physics::update(float dt)
 	bodiesToDestroy_.clear();
 
 	return 0;
-}
-
-sf::Vector2f Physics::normalizeVector( const sf::Vector2f&& vector )
-{
-	return ::normalizeVector(vector);
 }
 
 void Physics::updateCollisions()

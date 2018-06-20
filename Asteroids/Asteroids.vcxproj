@@ -150,6 +150,7 @@
     <ClInclude Include="Render\Render.hpp" />
     <ClInclude Include="System\FileReader.hpp" />
     <ClInclude Include="System\Game.hpp" />
+    <ClInclude Include="System\Math.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="resources\sansation.ttf" />

@@ -178,7 +178,7 @@ void GameLogic::rotatePlayer() const
 	const auto& mousePosition = sf::Mouse::getPosition(*window_);
 	const sf::Vector2f localPosition(static_cast<float>(mousePosition.x), static_cast<float>(mousePosition.y));
 	const auto& direction = localPosition - player->getPosition();
-	player->setDirection(std::move(direction));
+	player->setDirection(direction);
 }
 
 void GameLogic::handlePlayerShooting()
