@@ -128,7 +128,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GameLogicObject.cpp" />
     <ClCompile Include="GameLogic\Scenario.cpp" />
@@ -137,9 +136,10 @@
     <ClCompile Include="Physics\PhysicsObject.cpp" />
     <ClCompile Include="Render\GameplayRender.cpp" />
     <ClCompile Include="Render\MenuRender.cpp" />
+    <ClCompile Include="System\FileReader.cpp" />
+    <ClCompile Include="System\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Game.hpp" />
     <ClInclude Include="GameLogic\GameLogic.hpp" />
     <ClInclude Include="GameLogic\GameLogicObject.hpp" />
     <ClInclude Include="GameLogic\Scenario.hpp" />
@@ -148,13 +148,14 @@
     <ClInclude Include="Render\GameplayRender.hpp" />
     <ClInclude Include="Render\MenuRender.hpp" />
     <ClInclude Include="Render\Render.hpp" />
-    <ClInclude Include="resource.h" />
+    <ClInclude Include="System\FileReader.hpp" />
+    <ClInclude Include="System\Game.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <Font Include="sansation.ttf" />
+    <Font Include="resources\sansation.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="scenarios.ini" />
+    <None Include="resources\scenarios.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

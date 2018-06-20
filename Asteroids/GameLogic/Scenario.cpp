@@ -1,56 +1,44 @@
 #include <cassert>
-#include <fstream>
 #include <regex>
 #include <string>
 
-#include <iostream>
+#include "System/FileReader.hpp"
 
 #include "GameLogic.hpp"
 
 #include "Scenario.hpp"
 
-static const std::regex levelRegex(R"(\[level\s*(\d+)\])");
-static const std::regex paramRegex(R"((\w+)\s*=\s*(\d+))");
+
+static const std::regex levelPattern(R"(\w+(\d+))");
 
 
 
 Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 {
-	std::fstream file;
-	file.open(fileName, std::fstream::in);
-	
+	FileReader::Sections levels = FileReader::readIniFile(fileName);
 	std::smatch match;
-	std::string line;
 
-	while (std::getline(file, line))
+	for (auto&& levelDescription : levels)
 	{
-		if (std::regex_search(line, match, levelRegex))
+		assert(std::regex_search(levelDescription.first, match, levelPattern));
+		const int level = std::stoi(match[1])-1;
+
+		std::unordered_map<std::string, int> p = 
 		{
-			const int level = std::stoi(match[1])-1;
+			{"targetScore", 0},
+			{"time", 0},
+			{"maxAsteroids", 0},
+			{"asteroidsInterval", 0},
+			{"maxBosses", 0},
+			{"bossInterval", 0},
+		};
 
-			std::unordered_map<std::string, int> p = 
-			{
-				{"targetScore", 0},
-				{"time", 0},
-				{"maxAsteroids", 0},
-				{"asteroidsInterval", 0},
-				{"maxBosses", 0},
-				{"bossInterval", 0},
-			};
-
-			while (std::getline(file, line) && std::regex_search(line, match, paramRegex))
-			{
-				if (p.find(match[1]) != p.end())
-					p[match[1]] = std::stoi(match[2]);
-			}
-			scenarios_[level] = { p["targetScore"], 
-								  p["time"], 
-								  p["maxAteroids"], 
-								  p["asteroidsInterval"], 
-								  p["maxBosses"], 
-								  p["bossInterval"]};
-
-		}
+		scenarios_[level] = { levelDescription.second["targetScore"], 
+							  levelDescription.second["time"], 
+							  levelDescription.second["maxAteroids"], 
+							  levelDescription.second["asteroidsInterval"], 
+							  levelDescription.second["maxBosses"], 
+							  levelDescription.second["bossInterval"]};
 	}
 }
 

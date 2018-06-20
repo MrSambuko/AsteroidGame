@@ -65,7 +65,7 @@ void Game::prepareMenu()
 
 void Game::prepareGameplay()
 {
-	Scenario scenario("scenarios.ini");
+	Scenario scenario("resources/scenarios.ini");
 	physics_ = std::make_shared<Physics>(static_cast<float>(window_->getSize().x), static_cast<float>(window_->getSize().y));
 	gameLogic_ = std::make_shared<GameLogic>(window_, std::move(scenario), physics_.get());
 	render_ = std::make_shared<GameplayRender>(gameLogic_.get(), window_);

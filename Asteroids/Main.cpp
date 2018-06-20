@@ -2,7 +2,7 @@
 
 #include "SFML/Graphics.hpp"
 
-#include "Game.hpp"
+#include "System/Game.hpp"
 
 
 constexpr unsigned WIDTH = 1024;

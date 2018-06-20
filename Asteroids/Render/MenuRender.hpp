@@ -28,5 +28,4 @@ public:
 
 private:
 	std::vector<sf::Text> menuItems_;
-	sf::Font font_;
 };

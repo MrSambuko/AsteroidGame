@@ -61,7 +61,7 @@ private:
 	void handlePlayerShooting();
 	void destroyObjects();
 
-	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2) const;
+	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2);
 
 private:
 	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
@@ -73,6 +73,7 @@ private:
 
 	sf::Window* window_ = nullptr;
 	Scenario scenario_;
+	ScenarioDetails currentScenario;
 	Physics* physics_ = nullptr;
 
 };

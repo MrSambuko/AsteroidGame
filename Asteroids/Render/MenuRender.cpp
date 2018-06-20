@@ -8,25 +8,26 @@
 
 MenuRender::MenuRender(sf::RenderWindow * window) : BaseRender(window)
 {
-	font_.loadFromFile("sansation.ttf");
-	sf::Vector2f position(window_->getSize().x * .5f, window_->getSize().y * .5f );
+	const float middleX = window_->getSize().x * .5f;
+	const auto& setX = [&](const sf::Text& text){return middleX - text.getGlobalBounds().width*.5f;};
 
 	sf::Text text;
 	text.setFont(font_);
-	text.setString("Ateroids");
 
+	text.setString("Asteroids");
+	sf::Vector2f position(setX(text), 0);
 	text.setPosition(position);
 	text.setFillColor(sf::Color::Red);
 	const auto& bounds = text.getGlobalBounds();
 	menuItems_.push_back(text);
 
+	position = {setX(text), window_->getSize().y * .5f + bounds.height + 10 };
 	text.setString("Start");
-	position.y += bounds.height + 10;
 	text.setPosition(position);
 	menuItems_.push_back(text);
 
 	text.setString("Exit");
-	position.y += bounds.height + 10;
+	position = {setX(text), position.y + bounds.height + 10};
 	text.setPosition(position);
 	menuItems_.push_back(text);
 }

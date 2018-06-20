@@ -17,12 +17,17 @@
     <ClCompile Include="GameLogic\Scenario.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
-    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Render\MenuRender.cpp">
       <Filter>Render</Filter>
     </ClCompile>
     <ClCompile Include="Render\GameplayRender.cpp">
       <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Game.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System\FileReader.cpp">
+      <Filter>System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -37,6 +42,9 @@
     </Filter>
     <Filter Include="Render">
       <UniqueIdentifier>{ffa9c345-51d5-4837-80b3-8b2fbcfd5a3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{6fcc2193-67a6-49a1-a7d6-d02deabf6c05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,25 +63,29 @@
     <ClInclude Include="GameLogic\Scenario.hpp">
       <Filter>GameLogic</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Render\Render.hpp">
       <Filter>Render</Filter>
     </ClInclude>
-    <ClInclude Include="Game.hpp" />
     <ClInclude Include="Render\GameplayRender.hpp">
       <Filter>Render</Filter>
     </ClInclude>
     <ClInclude Include="Render\MenuRender.hpp">
       <Filter>Render</Filter>
     </ClInclude>
+    <ClInclude Include="System\Game.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System\FileReader.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Font Include="sansation.ttf">
+    <Font Include="resources\sansation.ttf">
       <Filter>Resources</Filter>
     </Font>
   </ItemGroup>
   <ItemGroup>
-    <None Include="scenarios.ini">
+    <None Include="resources\scenarios.ini">
       <Filter>Resources</Filter>
     </None>
   </ItemGroup>

@@ -12,6 +12,9 @@ GameLogic::GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics) 
 
 GameLogicState GameLogic::update( float dt )
 {
+	if (score_ >= currentScenario.targetScore)
+		return GAME_OVER;
+
 	// move player
 	rotatePlayer();
 	movePlayer();
@@ -118,6 +121,7 @@ void GameLogic::init()
 	objects_.insert(player_);
 	scenario_.setGameLogic(this);
 	scenario_.setCurrentLevel(0);
+	currentScenario = scenario_.getScenarioDetails(0);
 	scenario_.start();
 }
 
@@ -191,7 +195,7 @@ void GameLogic::handlePlayerShooting()
 	}
 }
 
-void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2) const
+void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 {
 	// if any of the objects is player - game is over
 	const auto& b1Type = body1.getLogicObject()->getType();
@@ -208,6 +212,8 @@ void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2) co
 		{
 			body1.getLogicObject()->markForDestruction();
 			body2.getLogicObject()->markForDestruction();
+
+			score_ += 100;
 		}
 		else
 		{
