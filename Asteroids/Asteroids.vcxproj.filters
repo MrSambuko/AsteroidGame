@@ -29,6 +29,12 @@
     <ClCompile Include="System\FileReader.cpp">
       <Filter>System</Filter>
     </ClCompile>
+    <ClCompile Include="Render\LevelCompleteRender.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Render\YouAreDeadRender.cpp">
+      <Filter>Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -81,6 +87,12 @@
     <ClInclude Include="System\Math.hpp">
       <Filter>System</Filter>
     </ClInclude>
+    <ClInclude Include="Render\LevelCompleteRender.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Render\YouAreDeadRender.hpp">
+      <Filter>Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Font Include="resources\sansation.ttf">
@@ -89,6 +101,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="resources\scenarios.ini">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="resources\game.ini">
       <Filter>Resources</Filter>
     </None>
   </ItemGroup>

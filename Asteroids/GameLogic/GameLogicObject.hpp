@@ -19,37 +19,14 @@ enum GameLogicObjectType
 	PROJECTILE,
 	BOSS,
 };
-
-constexpr static int NO_MOVE	= 0;
-constexpr static int UP			= 0x0001;
-constexpr static int RIGHT		= 0x0010;
-constexpr static int DOWN		= 0x0100;
-constexpr static int LEFT		= 0x1000;
-
 using MoveDirection = int;
 
-static std::unordered_map<sf::Keyboard::Key, int> keyToDirectionMap =
-{
-	{sf::Keyboard::W, UP},
-	{sf::Keyboard::D, RIGHT},
-	{sf::Keyboard::S, DOWN},
-	{sf::Keyboard::A, LEFT},
-};
+constexpr static MoveDirection NO_MOVE = 0;
+constexpr static MoveDirection UP = 0x0001;
+constexpr static MoveDirection RIGHT = 0x0010;
+constexpr static MoveDirection DOWN = 0x0100;
+constexpr static MoveDirection LEFT = 0x1000;
 
-constexpr static float PLAYER_SPEED = 1000.f;
-constexpr static float ASTEROID_SPEED = 250.f;
-constexpr static float PROJECTILE_SPEED = 10000.f;
-
-static std::unordered_map<int, sf::Vector2f> moveToVectorMap = 
-{
-	{NO_MOVE, {}},
-	{UP,	sf::Vector2f(  .0f, -1.0f)*PLAYER_SPEED},
-	{RIGHT, sf::Vector2f( 1.0f,   .0f)*PLAYER_SPEED},
-	{DOWN,	sf::Vector2f(  .0f,  1.0f)*PLAYER_SPEED},
-	{LEFT,	sf::Vector2f(-1.0f,   .0f)*PLAYER_SPEED}
-};
-
-constexpr static float SHOOT_INTERVAL = 1.f;
 }
 
 
@@ -121,8 +98,6 @@ public:
 	constexpr std::chrono::time_point<std::chrono::steady_clock> lastTimeShooting() const { return lastTimeShooting_; }
 	constexpr GL::MoveDirection getMoveDirection() const { return moveDirection_; }
 
-
-
 private:
 	bool isShooting_ = false;
 	std::chrono::time_point<std::chrono::steady_clock> lastTimeShooting_;
@@ -133,11 +108,11 @@ private:
 class AsteroidGameLogicObject : public GameLogicObject
 {
 public:
-	AsteroidGameLogicObject(GameLogic* logic);
+	AsteroidGameLogicObject(GameLogic* logic, float speed);
 };
 
 class ProjectileGameLogicObject : public GameLogicObject
 {
 public:
-	ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction );
+	ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction, float speed );
 };

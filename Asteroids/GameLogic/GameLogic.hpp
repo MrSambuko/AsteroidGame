@@ -30,6 +30,7 @@ static std::unordered_map< GL::GameLogicObjectType, PY::LeaveFieldStrategy> Leav
 enum GameLogicState
 {
 	PLAYING,
+	LEVEL_COMPLETE,
 	GAME_OVER
 };
 
@@ -38,7 +39,7 @@ class GameLogic final
 public:
 	explicit GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics);
 
-	void init();
+	void init(int level);
 	GameLogicState update( float dt );
 
 	void handleKeyPressed(sf::Keyboard::Key key) const;
@@ -67,13 +68,22 @@ private:
 	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
 
 	std::unordered_set<GameLogicObjectPtr> objects_;
+
+	float playerMoveSpeed_ = 0.0f;
+	float asteroidMoveSpeed_ = 0.0f;
+	float projectileSpeed_ = 0.0f;
+
 	int score_ = 0;
 	int numAsteroids_ = 0;
 	int numBosses_ = 0;
 
+	int asteroidReward_ = 0;
+	int bossReward_ = 0;
+	float shootInterval_ = 0.0f;
+
 	sf::Window* window_ = nullptr;
 	Scenario scenario_;
-	ScenarioDetails currentScenario;
+	ScenarioDetails currentScenario_;
 	Physics* physics_ = nullptr;
 
 };

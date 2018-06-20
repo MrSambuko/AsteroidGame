@@ -7,21 +7,26 @@
 
 #include "GameLogic/GameLogic.hpp"
 #include "Render/Render.hpp"
-#include "Render/MenuRender.hpp"
 
 
-enum GameState
+namespace GameNamespace 
 {
-	MENU,
-	GAMEPLAY
-};
+	enum GameState
+	{
+		MENU,
+		GAMEPLAY,
+		LEVEL_COMPLETE,
+		YOUR_ARE_DEAD
+	};
+}
+
 
 class Physics;
 
 class Game final
 {
 public:
-	Game(sf::RenderWindow* window) : window_(window), gameState_(MENU) { switchState(MENU); }
+	Game(sf::RenderWindow* window) : window_(window), gameState_(GameNamespace::GameState::MENU) { switchState(GameNamespace::GameState::MENU); }
 	~Game();
 
 	void update();
@@ -29,22 +34,30 @@ public:
 	void updateEvent(const sf::Event& event);
 
 private:
-	void switchState(GameState newState);
+	void switchState(GameNamespace::GameState newState);
 	void prepareMenu();
+	void prepareLevelCompleteScreen();
 	void prepareGameplay();
+	void prepareYouAreDeadScreen();
 
 	void updateMenuEvent(const sf::Event& event);
 	void updateGameplayEvent(const sf::Event& event) const;
-	void updateMenuLogic() const;
+	void updateLevelCompleteEvent(const sf::Event& event);
+	void updateYouAreDeadEvent(const sf::Event& event);
+	void updateMenuLogic() const;	
 	void updateGameplayLogic();
+	void updateLevelCompleteLogic() const;
+	void updateYouAreDeadLogic() const;
 
 private:
 	sf::RenderWindow* window_;
-	GameState gameState_;
+	GameNamespace::GameState gameState_;
 
 	std::shared_ptr<GameLogic> gameLogic_;
 	std::shared_ptr<Physics> physics_;
 	std::shared_ptr<BaseRender> render_;
+
+	int currentLevel_ = 0;
 
 	std::chrono::time_point<std::chrono::steady_clock> start_;
 };

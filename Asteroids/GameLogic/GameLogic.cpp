@@ -1,19 +1,65 @@
+#include <cassert>
+#include <string>
+
 #include "Physics/Physics.hpp"
+#include "System/FileReader.hpp"
 
 #include "GameLogic.hpp"
 
+static const std::vector<std::string> SETTINGS = {
+	"playerMoveSpeed",
+	"asteroidMoveSpeed",
+	"bossSpeed",
+	"asteroidReward",
+	"bossReward",
+	"asteroidSplitNumber",
+	"shootInterval",
+	"projectileMoveSpeed",
+};
+
+static std::unordered_map<sf::Keyboard::Key, int> keyToDirectionMap =
+{
+{ sf::Keyboard::W, GL::UP },
+{ sf::Keyboard::D, GL::RIGHT },
+{ sf::Keyboard::S, GL::DOWN },
+{ sf::Keyboard::A, GL::LEFT },
+};
+
+static std::unordered_map<int, sf::Vector2f> PLAYER_MOVE_SPEED =
+{
+{ GL::NO_MOVE,{} },
+{ GL::UP,	 sf::Vector2f(.0f, -1.0f)},
+{ GL::RIGHT, sf::Vector2f(1.0f,   .0f) },
+{ GL::DOWN,	 sf::Vector2f(.0f,  1.0f) },
+{ GL::LEFT,	 sf::Vector2f(-1.0f,  .0f) }
+};
 
 GameLogic::GameLogic(sf::Window* window, Scenario&& scenario, Physics* physics) :
 	window_(window),
 	scenario_(scenario),
 	physics_(physics)
 {
+	auto& sections = FileReader::readIniFile("resources/game.ini");
+	assert(sections.find("gameplay") != sections.end());
+
+	auto& gameplaySettings = sections["gameplay"];
+
+	for (const auto& setting : SETTINGS)
+		assert(gameplaySettings.find(setting) != gameplaySettings.end());
+
+	numAsteroids_ = gameplaySettings["numAsteroids"];
+	asteroidReward_ = gameplaySettings["asteroidReward"];
+	bossReward_ = gameplaySettings["bossReward"];
+	shootInterval_ = static_cast<float>(gameplaySettings["shootInterval"]);
+	playerMoveSpeed_ = static_cast<float>(gameplaySettings["playerMoveSpeed"]);
+	asteroidMoveSpeed_ = static_cast<float>(gameplaySettings["asteroidMoveSpeed"]);
+	projectileSpeed_ = static_cast<float>(gameplaySettings["projectileMoveSpeed"]);
 }
 
 GameLogicState GameLogic::update( float dt )
 {
-	if (score_ >= currentScenario.targetScore)
-		return GAME_OVER;
+	if (score_ >= currentScenario_.targetScore)
+		return LEVEL_COMPLETE;
 
 	// move player
 	rotatePlayer();
@@ -39,7 +85,7 @@ void GameLogic::handleKeyPressed( sf::Keyboard::Key key ) const
 	case sf::Keyboard::D:
 	case sf::Keyboard::S:
 	{
-		const auto& direction = GL::keyToDirectionMap[key];
+		const auto& direction = keyToDirectionMap[key];
 		player_->startMoving(direction);
 		break;
 	}
@@ -62,12 +108,17 @@ void GameLogic::handleKeyReleased( sf::Keyboard::Key key ) const
 	case sf::Keyboard::D:
 	case sf::Keyboard::S:
 	{
-		const auto& direction = GL::keyToDirectionMap[key];
+		if (!player_->isMoving())
+			break;
+
+		const auto& direction = keyToDirectionMap[key];
 		player_->stopMoving(direction);
 		break;
 	}
 
 	case sf::Keyboard::Space:
+		if (!player_->isShooting())
+			break;
 		player_->stopShooting();
 		break;
 
@@ -91,7 +142,7 @@ void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObj
 	switch (type)
 	{
 	case GL::ASTEROID:
-		objects_.emplace(std::make_shared<AsteroidGameLogicObject>(this));
+		objects_.emplace(std::make_shared<AsteroidGameLogicObject>(this, asteroidMoveSpeed_));
 		++numAsteroids_;
 		break;
 	case GL::BOSS:
@@ -101,7 +152,11 @@ void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObj
 	{
 		const auto& direction = player_->getPhysicalObject()->getDirection();
 		const auto& newPosition = position + direction*11.f;
-		objects_.emplace(std::make_shared<ProjectileGameLogicObject>(this, position, player_->getPhysicalObject()->getDirection()));
+		objects_.emplace(std::make_shared<ProjectileGameLogicObject>(
+			this, 
+			position, 
+			player_->getPhysicalObject()->getDirection(), 
+			projectileSpeed_));
 		break;
 	}
 	default:
@@ -110,7 +165,7 @@ void GameLogic::createGameObject(const sf::Vector2f & position, GL::GameLogicObj
 }
 
 
-void GameLogic::init()
+void GameLogic::init(int level)
 {
 	physics_->setCollistionCallback(
 		[this](PhysicsObject& body1, PhysicsObject& body2)
@@ -120,8 +175,8 @@ void GameLogic::init()
 	player_ = std::make_shared<PlayerGameLogicObject>(this);
 	objects_.insert(player_);
 	scenario_.setGameLogic(this);
-	scenario_.setCurrentLevel(0);
-	currentScenario = scenario_.getScenarioDetails(0);
+	scenario_.setCurrentLevel(level);
+	currentScenario_ = scenario_.getScenarioDetails(level);
 	scenario_.start();
 }
 
@@ -161,10 +216,10 @@ void GameLogic::movePlayer() const
 	if (player_->isMoving())
 	{
 		const auto& playerMoveDirection = player_->getMoveDirection();
-		for (const auto& pair : GL::moveToVectorMap)
+		for (const auto& pair : PLAYER_MOVE_SPEED)
 		{
 			if (playerMoveDirection & pair.first)
-				velocity += pair.second;
+				velocity += (playerMoveSpeed_ * pair.second);
 		}
 		
 	}
@@ -187,7 +242,7 @@ void GameLogic::handlePlayerShooting()
 	{
 		const auto& now = std::chrono::steady_clock::now();
 		const auto& diffTime = std::chrono::duration_cast<std::chrono::duration<float>>(now - player_->lastTimeShooting());
-		if (diffTime.count() > GL::SHOOT_INTERVAL)
+		if (diffTime.count() > shootInterval_)
 		{
 			createGameObject(player_->getPhysicalObject()->getPosition(), GL::PROJECTILE);
 			player_->setLastTimeShooting(now);
@@ -204,7 +259,9 @@ void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 	{
 		// ignore collision with own bullets
 		if (b1Type != GL::PROJECTILE && b2Type != GL::PROJECTILE)
+		{
 			player_->markForDestruction();
+		}
 	}
 	else
 	{
@@ -213,7 +270,7 @@ void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 			body1.getLogicObject()->markForDestruction();
 			body2.getLogicObject()->markForDestruction();
 
-			score_ += 100;
+			score_ += asteroidReward_;
 		}
 		else
 		{

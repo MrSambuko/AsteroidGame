@@ -9,7 +9,7 @@
 MenuRender::MenuRender(sf::RenderWindow * window) : BaseRender(window)
 {
 	const float middleX = window_->getSize().x * .5f;
-	const auto& setX = [&](const sf::Text& text){return middleX - text.getGlobalBounds().width*.5f;};
+	const auto& setX = [&](const sf::Text& text){return middleX - text.getLocalBounds().width*.5f;};
 
 	sf::Text text;
 	text.setFont(font_);
@@ -21,8 +21,8 @@ MenuRender::MenuRender(sf::RenderWindow * window) : BaseRender(window)
 	const auto& bounds = text.getGlobalBounds();
 	menuItems_.push_back(text);
 
-	position = {setX(text), window_->getSize().y * .5f + bounds.height + 10 };
 	text.setString("Start");
+	position = { setX(text), window_->getSize().y * .5f + bounds.height + 10 };
 	text.setPosition(position);
 	menuItems_.push_back(text);
 

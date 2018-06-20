@@ -135,7 +135,9 @@
     <ClCompile Include="Physics\Physics.cpp" />
     <ClCompile Include="Physics\PhysicsObject.cpp" />
     <ClCompile Include="Render\GameplayRender.cpp" />
+    <ClCompile Include="Render\LevelCompleteRender.cpp" />
     <ClCompile Include="Render\MenuRender.cpp" />
+    <ClCompile Include="Render\YouAreDeadRender.cpp" />
     <ClCompile Include="System\FileReader.cpp" />
     <ClCompile Include="System\Game.cpp" />
   </ItemGroup>
@@ -146,8 +148,10 @@
     <ClInclude Include="Physics\Physics.hpp" />
     <ClInclude Include="Physics\PhysicsObject.hpp" />
     <ClInclude Include="Render\GameplayRender.hpp" />
+    <ClInclude Include="Render\LevelCompleteRender.hpp" />
     <ClInclude Include="Render\MenuRender.hpp" />
     <ClInclude Include="Render\Render.hpp" />
+    <ClInclude Include="Render\YouAreDeadRender.hpp" />
     <ClInclude Include="System\FileReader.hpp" />
     <ClInclude Include="System\Game.hpp" />
     <ClInclude Include="System\Math.hpp" />
@@ -156,6 +160,7 @@
     <Font Include="resources\sansation.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="resources\game.ini" />
     <None Include="resources\scenarios.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

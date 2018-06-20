@@ -35,7 +35,7 @@ Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 
 		scenarios_[level] = { levelDescription.second["targetScore"], 
 							  levelDescription.second["time"], 
-							  levelDescription.second["maxAteroids"], 
+							  levelDescription.second["maxAsteroids"], 
 							  levelDescription.second["asteroidsInterval"], 
 							  levelDescription.second["maxBosses"], 
 							  levelDescription.second["bossInterval"]};

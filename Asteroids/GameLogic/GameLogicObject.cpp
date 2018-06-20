@@ -3,6 +3,8 @@
 #include "GameLogicObject.hpp"
 
 
+constexpr static float SHOOT_INTERVAL = 1.f;
+
 GameLogicObject::GameLogicObject(GameLogic* logic, const sf::Vector2f& position, GL::GameLogicObjectType type) :
 	gameLogic_(logic),
 	type_(type)
@@ -17,14 +19,14 @@ GameLogicObject::~GameLogicObject()
 
 
 
-AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic) :
+AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic, float asteroidSpeed ) :
 	GameLogicObject(logic, logic->getPhysics()->generateRandomPositionOutsideBounds(), GL::ASTEROID)
 {
-	physicsObject_->setVelocity(Physics::generateRandomVelocity(physicsObject_->getPosition(), GL::ASTEROID_SPEED));
+	physicsObject_->setVelocity(Physics::generateRandomVelocity(physicsObject_->getPosition(), asteroidSpeed));
 }
 
-ProjectileGameLogicObject::ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction): 
+ProjectileGameLogicObject::ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction, float speed): 
 	GameLogicObject(logic, position, GL::PROJECTILE)
 {
-	physicsObject_->setVelocity(direction * GL::PROJECTILE_SPEED);
+	physicsObject_->setVelocity(direction * speed);
 }

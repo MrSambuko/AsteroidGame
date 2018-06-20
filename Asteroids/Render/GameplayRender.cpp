@@ -16,17 +16,31 @@ GameplayRender::GameplayRender( GameLogic* gameLogic, sf::RenderWindow* window )
 	text.setString("Score: ");
 	uiElements_[SCORE_LABEL] = text;
 
-	text.setString("0000");
-	text.setPosition(text.getPosition().x + text.getGlobalBounds().width, 0);
+	auto width = text.getLocalBounds().width;
+	text.setString("00000");
+	text.setPosition(text.getPosition().x + width, 0);
 	uiElements_[SCORE_VALUE] = text;
 	uiElements_[SCORE_VALUE].setString("");
 
+	width = text.getLocalBounds().width;
+	text.setString("/");
+	text.setPosition(text.getPosition().x + width, 0);
+	uiElements_[MAX_SCORE_LABEL] = text;
+
+	width = text.getLocalBounds().width;
+	text.setString("00000");
+	text.setPosition(text.getPosition().x + width, 0);
+	uiElements_[MAX_SCORE_VALUE] = text;
+	uiElements_[MAX_SCORE_VALUE].setString("");
+
 	text.setString("Level: ");
-	text.setPosition(window_->getSize().x * 0.5f - text.getGlobalBounds().width * 0.5f, 0);
+	width = text.getLocalBounds().width;
+	text.setPosition(window_->getSize().x * 0.5f - width * 0.5f, 0);
 	uiElements_[LEVEL_LABEL] = text;
 
+	width = text.getLocalBounds().width;
 	text.setString("00");
-	text.setPosition(text.getPosition().x + text.getGlobalBounds().width, 0);
+	text.setPosition(text.getPosition().x + width, 0);
 	uiElements_[LEVEL_VALUE] = text;
 	uiElements_[LEVEL_VALUE].setString("");
 }
@@ -39,6 +53,17 @@ void GameplayRender::update()
 	uiElements_[SCORE_VALUE].setString(std::to_string(gameLogic_->getScore()));
 	drawUi();
 }
+
+void GameplayRender::setLevel(int level)
+{
+	uiElements_[LEVEL_VALUE].setString(std::to_string(level));
+}
+
+void GameplayRender::setMaxScore(int maxScore)
+{
+	uiElements_[MAX_SCORE_VALUE].setString(std::to_string(maxScore));
+}
+
 
 void GameplayRender::drawShapes() const
 {
