@@ -1,7 +1,6 @@
 #pragma once
-#include <chrono>
 
-#include "GameLogic.hpp"
+#include <chrono>
 
 
 class PlayerGameLogicObject : public GameLogicObject

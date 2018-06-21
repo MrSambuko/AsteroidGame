@@ -108,7 +108,6 @@ void Game::prepareLevelCompleteScreen()
 	render_ = std::make_shared<LevelCompleteRender>(window_);
 	gameLogic_ = nullptr;
 	physics_ = nullptr;
-	++currentLevel_;
 }
 
 

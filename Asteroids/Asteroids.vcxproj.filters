@@ -53,6 +53,12 @@
     <ClCompile Include="Physics\PlayerPhysicsObject.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\BossPhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\BossGameLogicObject.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -130,6 +136,12 @@
       <Filter>Physics</Filter>
     </ClInclude>
     <ClInclude Include="Physics\PlayerPhysicsObject.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\BossGameLogicObject.hpp">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\BossPhysicsObject.hpp">
       <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>

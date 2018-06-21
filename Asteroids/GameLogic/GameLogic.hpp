@@ -10,6 +10,7 @@
 #include "GameLogicObject.hpp"
 #include "Scenario.hpp"
 #include "PlayerGameLogicObject.hpp"
+#include "BossGameLogicObject.hpp"
 
 
 namespace sf
@@ -24,7 +25,7 @@ static std::unordered_map< GL::GameLogicObjectType, PY::LeaveFieldStrategy> Leav
 {
 	{GL::PLAYER, PY::KEEP},
 	{GL::ASTEROID, PY::DESTROY},
-	{GL::PROJECTILE, PY::DESTROY},
+	{GL::PLAYER_PROJECTILE, PY::DESTROY},
 	{GL::BOSS, PY::KEEP}
 };
 
@@ -48,9 +49,11 @@ public:
 	void handleMousePressedEvent(sf::Mouse::Button button) const;
 	void handleMouseReleasedEvent(sf::Mouse::Button button) const;
 
-	void createGameObject(const sf::Vector2f& position, GL::GameLogicObjectType type);
-	Physics* getPhysics() const { return physics_; }
+	void createGameObject( const sf::Vector2f& position, GL::GameLogicObjectType type, GameLogicObjectPtr owner = nullptr);
 
+	const GameLogicObject& getPlayer() const { return *player_; }
+	Physics* getPhysics() const { return physics_; }
+	
 	constexpr int getNumOfAsteroids() const { return numAsteroids_; }
 	constexpr int getNumOfBosses() const { return numBosses_; }
 	constexpr int getScore() const { return score_; }
@@ -59,26 +62,32 @@ public:
 
 private:
 	void movePlayer() const;
+	void moveBosses() const;
 	void rotatePlayer() const;
 	void handlePlayerShooting();
+	void handleBossesShooting();
+
 	void destroyObjects();
 
 	void onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2);
 
 private:
 	std::shared_ptr<PlayerGameLogicObject> player_ = nullptr;
+	std::unordered_set<std::shared_ptr<BossGameLogicObject>> bosses_;
 
 	std::unordered_set<GameLogicObjectPtr> objects_;
 
 	float playerMoveSpeed_ = 0.0f;
 	float asteroidMoveSpeed_ = 0.0f;
 	float projectileSpeed_ = 0.0f;
+	float bossMoveSpeed_ = 0.0f;
 
 	int score_ = 0;
 	int numAsteroids_ = 0;
 	int numBosses_ = 0;
 
 	int asteroidReward_ = 0;
+	int smallAsteroidReward_ = 0;
 	int bossReward_ = 0;
 	float shootInterval_ = 0.0f;
 

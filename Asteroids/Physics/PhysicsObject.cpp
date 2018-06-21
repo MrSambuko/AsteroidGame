@@ -21,8 +21,6 @@ PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, con
 
 void PhysicsObject::move(const float& dt)
 {
-	position_ += velocity_ * dt;
-
 	const auto& bounds = physics_->getBounds();
 	if (position_.x < 0 || position_.y < 0 || position_.x > bounds.x || position_.y > bounds.y)
 	{
@@ -34,9 +32,29 @@ void PhysicsObject::move(const float& dt)
 
 		case PY::BOUNCE:
 			if (position_.x < 0 || position_.x > bounds.x)
+			{
+				position_.x = position_.x < 0 ? 0 : bounds.x;
 				velocity_.x = -velocity_.x;
+			}
 			if (position_.y < 0 || position_.y > bounds.y)
+			{
 				velocity_.y = -velocity_.y;
+				position_.y = position_.y < 0 ? 0 : bounds.y;
+			}
+			break;
+
+		case PY::KEEP:
+			if (position_.x < 0 || position_.x > bounds.x)
+			{
+				velocity_.x = 0;
+				position_.x = position_.x < 0 ? 0 : bounds.x;
+			}
+			if (position_.y < 0 || position_.y > bounds.y)
+			{
+				velocity_.y = 0;
+				position_.y = position_.y < 0 ? 0 : bounds.y;
+			}
+			
 			break;
 
 		default:
@@ -44,6 +62,7 @@ void PhysicsObject::move(const float& dt)
 		}
 	}
 
+	position_ += velocity_ * dt;
 	shape_->setPosition(position_);
 	shape_->setRotation(shape_->getRotation()+anglePerSeconds_);
 }
@@ -57,9 +76,9 @@ void PhysicsObject::reverseVelocity()
 
 void PhysicsObject::setDirection( const sf::Vector2f& newDirection )
 {
-	const auto& angle = angleBetweenVectors(-direction_, -normalizeVector(newDirection)) * 180 / PI;
+	const auto& angle = angleBetweenVectors(-direction_, -newDirection) * 180 / PI;
 	shape_->rotate(angle);
-	direction_ = normalizeVector(newDirection);
+	direction_ = newDirection;
 }
 
 bool PhysicsObject::intersects(const PhysicsObject& other) const

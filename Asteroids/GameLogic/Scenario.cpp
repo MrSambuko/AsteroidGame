@@ -9,7 +9,7 @@
 #include "Scenario.hpp"
 
 
-static const std::regex levelPattern(R"(\w+(\d+))");
+static const std::regex levelPattern(R"(level(\d+))");
 
 
 
@@ -30,7 +30,7 @@ Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 			{"maxAsteroids", 0},
 			{"asteroidsInterval", 0},
 			{"maxBosses", 0},
-			{"bossInterval", 0},
+			{"bossesInterval", 0},
 		};
 
 		scenarios_[level] = { levelDescription.second["targetScore"], 
@@ -38,7 +38,7 @@ Scenario::Scenario(const std::string& fileName) : gameLogic_(nullptr)
 							  levelDescription.second["maxAsteroids"], 
 							  levelDescription.second["asteroidsInterval"], 
 							  levelDescription.second["maxBosses"], 
-							  levelDescription.second["bossInterval"]};
+							  levelDescription.second["bossesInterval"]};
 	}
 }
 
@@ -61,7 +61,7 @@ void Scenario::update( float dt )
 	{
 		const auto& elapsed = bossSpawnTimer_.getElapsedTime().asSeconds();
 
-		if (elapsed > currentScenario_.bossInterval)
+		if (elapsed > currentScenario_.bossesInterval)
 		{
 			gameLogic_->createGameObject({.0f, .0f}, GL::BOSS);
 			bossSpawnTimer_.restart();

@@ -1,30 +1,27 @@
 #include <cassert>
-#include <random>
 
 #include "GameLogic/GameLogic.hpp"
+#include "System/Common.hpp"
 #include "System/Math.hpp"
 
 #include "AsteroidPhysicsObject.hpp"
+#include "BossPhysicsObject.hpp"
 #include "PlayerPhysicsObject.hpp"
 #include "ProjectilePhysicsObject.hpp"
 
 #include "Physics.hpp"
 
 
+
+
 namespace
 {
 	constexpr float PI = 3.14159265358979323846f;
-	std::random_device r;
-	std::default_random_engine generator{r()};
-	std::uniform_int_distribution<int> angleDistribution(-45, 45);
-	auto getAngle = [](){ return angleDistribution(generator) * PI / 180.f; };
+	auto getAngle = [](){ return generateRandomInt(-45, 45) * PI / 180.f; };
 
-	
-
-
-	enum
+	enum Side
 	{
-		UP,
+		UP = 0,
 		RIGHT,
 		DOWN,
 		LEFT
@@ -42,21 +39,19 @@ sf::Vector2f Physics::generateRandomVelocity( const sf::Vector2f& position, floa
 sf::Vector2f Physics::generateRandomPositionOutsideBounds() const
 {
 	constexpr static float OFFSET = 20.f;
-	static std::uniform_int_distribution<int> sideChoiceDistr(0, 3);
-	static std::uniform_real<float> xDistribution(0, width_);
-	static std::uniform_real<float> yDistribution(0, height_);
-	const int side = sideChoiceDistr(generator);
+	const auto& side = static_cast<Side>(generateRandomInt(0, 3));
 
+	sf::Vector2f result;
 	switch (side)
 	{
 	case UP:
-		return {xDistribution(generator), height_ - OFFSET};
+		return {generateRandomFloat(0, width_), height_ - OFFSET};
 	case DOWN:
-		return {xDistribution(generator), OFFSET};
+		return {generateRandomFloat(0, width_), OFFSET};
 	case RIGHT:
-		return {width_ - OFFSET, yDistribution(generator)};
+		return {width_ - OFFSET, generateRandomFloat(0, height_)};
 	case LEFT:
-		return {OFFSET, yDistribution(generator)};
+		return {OFFSET, generateRandomFloat(0, height_)};
 	default:
 		assert(false);
 		return {};
@@ -75,12 +70,21 @@ PhysicsObjectPtr Physics::createPhysicsBody(GameLogicObject* obj, const sf::Vect
 		ptr = std::make_shared<AsteroidPhysicsObject>( this, obj, position );
 		break;
 
+	case GL::SMALL_ASTEROID:
+		ptr = std::make_shared<SmallAsteroidPhysicsObject>(this, obj, position);
+		break;
+
 	case GL::PLAYER:
 		ptr = std::make_shared<PlayerPhysicsObject>(this, obj);
 		break;
 
-	case GL::PROJECTILE:
+	case GL::PLAYER_PROJECTILE:
+	case GL::BOSS_PROJECTILE:
 		ptr = std::make_shared<ProjectilePhysicsObject>(this, obj, position);
+		break;
+
+	case GL::BOSS:
+		ptr = std::make_shared<BossPhysicsObject>(this, obj, position);
 		break;
 
 	default: 

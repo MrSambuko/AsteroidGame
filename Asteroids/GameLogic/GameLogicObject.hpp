@@ -16,8 +16,10 @@ enum GameLogicObjectType
 {
 	PLAYER,
 	ASTEROID,
-	PROJECTILE,
+	SMALL_ASTEROID,
+	PLAYER_PROJECTILE,
 	BOSS,
+	BOSS_PROJECTILE
 };
 using MoveDirection = int;
 

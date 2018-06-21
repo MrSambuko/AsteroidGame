@@ -12,3 +12,9 @@ class ProjectileGameLogicObject : public GameLogicObject
 public:
 	ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction, float speed );
 };
+
+class BossProjectileGameLogicObject : public GameLogicObject
+{
+public:
+	BossProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction, float speed );
+};

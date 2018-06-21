@@ -14,7 +14,7 @@ struct ScenarioDetails
 	int maxAsteroids = 0;
 	int asteroidsInterval = 0;
 	int maxBosses = 0;
-	int bossInterval = 0;
+	int bossesInterval = 0;
 };
 
 class Scenario final

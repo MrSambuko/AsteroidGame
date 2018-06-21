@@ -34,6 +34,7 @@ public:
 	bool intersects(const PhysicsObject& other) const;
 
 	constexpr const sf::Vector2f& getPosition() const { return position_; }
+	constexpr const sf::Vector2f& getVelocity() const { return velocity_; }
 	constexpr const sf::Vector2f& getDirection() const { return direction_; }
 	std::shared_ptr<sf::Shape> getShape() const { return shape_; }
 protected:
