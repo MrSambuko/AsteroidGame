@@ -2,11 +2,12 @@
 #include "SFML/Graphics/ConvexShape.hpp"
 
 #include "GameLogic/GameLogicObject.hpp"
+#include "System/Math.hpp"
+#include "System/Common.hpp"
+
 #include "Physics.hpp"
 
 #include "PhysicsObject.hpp"
-#include <random>
-#include "System/Math.hpp"
 
 
 PhysicsObject::PhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position, PY::LeaveFieldStrategy strategy) :
@@ -44,6 +45,7 @@ void PhysicsObject::move(const float& dt)
 	}
 
 	shape_->setPosition(position_);
+	shape_->setRotation(shape_->getRotation()+anglePerSeconds_);
 }
 
 void PhysicsObject::reverseVelocity()
@@ -80,21 +82,17 @@ namespace
 std::shared_ptr<sf::ConvexShape> makeRandomConvexShape()
 {
 	constexpr float RADIUS = 20.f;
-	std::random_device r;
-	std::default_random_engine generator{r()};
-	const std::uniform_int_distribution<int> numOfVertixsDistribution(16, 32);
-	const std::uniform_real_distribution<float> coordinatesDistribution(.0f, 5.0f);
-
+	
 	auto shape = std::make_shared<sf::ConvexShape>();
 
-	const int& numOfPoints = numOfVertixsDistribution(generator);
+	const int& numOfPoints = generateRandomInt(16, 32);
 	const float& PI_STEP = PI * 2 / numOfPoints;
 	shape->setPointCount(numOfPoints);
 
 	for (int index = 0; index < numOfPoints; ++index)
 	{
-		const auto& x = coordinatesDistribution(generator)+RADIUS*cos(PI_STEP*index);
-		const auto& y = coordinatesDistribution(generator)+RADIUS*sin(PI_STEP*index);
+		const auto& x = generateRandomFloat(.0f, 5.0f)+RADIUS*cos(PI_STEP*index);
+		const auto& y = generateRandomFloat(.0f, 5.0f)+RADIUS*sin(PI_STEP*index);
 
 		shape->setPoint(index, {x, y});
 	}

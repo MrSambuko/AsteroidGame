@@ -16,17 +16,3 @@ GameLogicObject::~GameLogicObject()
 {
 	gameLogic_->getPhysics()->destroyPhysicsBody(physicsObject_);
 }
-
-
-
-AsteroidGameLogicObject::AsteroidGameLogicObject( GameLogic* logic, float asteroidSpeed ) :
-	GameLogicObject(logic, logic->getPhysics()->generateRandomPositionOutsideBounds(), GL::ASTEROID)
-{
-	physicsObject_->setVelocity(Physics::generateRandomVelocity(physicsObject_->getPosition(), asteroidSpeed));
-}
-
-ProjectileGameLogicObject::ProjectileGameLogicObject( GameLogic* logic, const sf::Vector2f& position, const sf::Vector2f& direction, float speed): 
-	GameLogicObject(logic, position, GL::PROJECTILE)
-{
-	physicsObject_->setVelocity(direction * speed);
-}

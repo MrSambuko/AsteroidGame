@@ -9,6 +9,7 @@
 
 #include "GameLogicObject.hpp"
 #include "Scenario.hpp"
+#include "PlayerGameLogicObject.hpp"
 
 
 namespace sf

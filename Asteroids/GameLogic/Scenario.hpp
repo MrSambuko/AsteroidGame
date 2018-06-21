@@ -24,6 +24,7 @@ public:
 
 	void start() { asteroidSpawnTimer_.restart(); }
 	void update( float dt );
+	void asteroidDestroyed() { asteroidSpawnTimer_.restart(); }
 
 	void setGameLogic(GameLogic* gameLogic) { gameLogic_ = gameLogic; }
 	void setCurrentLevel(int level) { currentScenario_ = scenarios_[level]; }

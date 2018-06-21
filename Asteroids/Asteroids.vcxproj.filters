@@ -35,6 +35,15 @@
     <ClCompile Include="Render\YouAreDeadRender.cpp">
       <Filter>Render</Filter>
     </ClCompile>
+    <ClCompile Include="GameLogic\AsteroidGameLogicObject.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
+    <ClCompile Include="System\Common.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameLogic\ProjectileGameLogicObject.cpp">
+      <Filter>GameLogic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -92,6 +101,18 @@
     </ClInclude>
     <ClInclude Include="Render\YouAreDeadRender.hpp">
       <Filter>Render</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\AsteroidGameLogicObject.hpp">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="System\Common.hpp">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\PlayerGameLogicObject.hpp">
+      <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="GameLogic\ProjectileGameLogicObject.hpp">
+      <Filter>GameLogic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

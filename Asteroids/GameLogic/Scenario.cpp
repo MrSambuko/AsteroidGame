@@ -47,19 +47,21 @@ void Scenario::update( float dt )
 	const int curAsteroids = gameLogic_->getNumOfAsteroids();
 
 	if (curAsteroids == 0)
+	{
 		spawnAsteroid();
+	}
 	else if (curAsteroids < currentScenario_.maxAsteroids)
 	{
-		const auto elapsed = asteroidSpawnTimer_.getElapsedTime();
-		if (elapsed.asSeconds() > currentScenario_.asteroidsInterval)
+		const auto& elapsed = asteroidSpawnTimer_.getElapsedTime().asSeconds();
+		if (elapsed > currentScenario_.asteroidsInterval)
 			spawnAsteroid();
 	}
 
 	if (gameLogic_->getNumOfBosses() < currentScenario_.maxBosses)
 	{
-		const auto elapsed = bossSpawnTimer_.getElapsedTime();
+		const auto& elapsed = bossSpawnTimer_.getElapsedTime().asSeconds();
 
-		if (elapsed.asSeconds() > currentScenario_.bossInterval)
+		if (elapsed > currentScenario_.bossInterval)
 		{
 			gameLogic_->createGameObject({.0f, .0f}, GL::BOSS);
 			bossSpawnTimer_.restart();

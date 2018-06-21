@@ -128,8 +128,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="GameLogic\AsteroidGameLogicObject.cpp" />
     <ClCompile Include="GameLogic\GameLogic.cpp" />
     <ClCompile Include="GameLogic\GameLogicObject.cpp" />
+    <ClCompile Include="GameLogic\ProjectileGameLogicObject.cpp" />
     <ClCompile Include="GameLogic\Scenario.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Physics\Physics.cpp" />
@@ -138,12 +140,16 @@
     <ClCompile Include="Render\LevelCompleteRender.cpp" />
     <ClCompile Include="Render\MenuRender.cpp" />
     <ClCompile Include="Render\YouAreDeadRender.cpp" />
+    <ClCompile Include="System\Common.cpp" />
     <ClCompile Include="System\FileReader.cpp" />
     <ClCompile Include="System\Game.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameLogic\AsteroidGameLogicObject.hpp" />
     <ClInclude Include="GameLogic\GameLogic.hpp" />
     <ClInclude Include="GameLogic\GameLogicObject.hpp" />
+    <ClInclude Include="GameLogic\PlayerGameLogicObject.hpp" />
+    <ClInclude Include="GameLogic\ProjectileGameLogicObject.hpp" />
     <ClInclude Include="GameLogic\Scenario.hpp" />
     <ClInclude Include="Physics\Physics.hpp" />
     <ClInclude Include="Physics\PhysicsObject.hpp" />
@@ -152,6 +158,7 @@
     <ClInclude Include="Render\MenuRender.hpp" />
     <ClInclude Include="Render\Render.hpp" />
     <ClInclude Include="Render\YouAreDeadRender.hpp" />
+    <ClInclude Include="System\Common.hpp" />
     <ClInclude Include="System\FileReader.hpp" />
     <ClInclude Include="System\Game.hpp" />
     <ClInclude Include="System\Math.hpp" />

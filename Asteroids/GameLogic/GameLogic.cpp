@@ -4,6 +4,9 @@
 #include "Physics/Physics.hpp"
 #include "System/FileReader.hpp"
 
+#include "AsteroidGameLogicObject.hpp"
+#include "ProjectileGameLogicObject.hpp"
+
 #include "GameLogic.hpp"
 
 static const std::vector<std::string> SETTINGS = {
@@ -61,18 +64,19 @@ GameLogicState GameLogic::update( float dt )
 	if (score_ >= currentScenario_.targetScore)
 		return LEVEL_COMPLETE;
 
+	destroyObjects();
+	if (player_ == nullptr)
+		return GAME_OVER;
+
 	// move player
 	rotatePlayer();
 	movePlayer();
 
 	// shoot
 	handlePlayerShooting();
-
+	
 	scenario_.update(dt);
-	destroyObjects();
-
-	if (player_ == nullptr)
-		return GAME_OVER;
+	
 	return PLAYING;
 }
 
@@ -269,6 +273,8 @@ void GameLogic::onBodiesCollision(PhysicsObject& body1, PhysicsObject& body2)
 		{
 			body1.getLogicObject()->markForDestruction();
 			body2.getLogicObject()->markForDestruction();
+
+			scenario_.asteroidDestroyed();
 
 			score_ += asteroidReward_;
 		}

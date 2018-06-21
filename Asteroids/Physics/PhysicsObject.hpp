@@ -29,6 +29,7 @@ public:
 	void move(const float& dt);
 	void reverseVelocity();
 	void setVelocity(sf::Vector2f&& newVelocity) { velocity_ = std::move(newVelocity); }
+	void setRotation(float anglePerSeconds) { anglePerSeconds_ = anglePerSeconds; }
 	void setDirection( const sf::Vector2f& newDirection );
 	bool intersects(const PhysicsObject& other) const;
 
@@ -41,6 +42,7 @@ protected:
 
 	PY::LeaveFieldStrategy strategy_;
 
+	float anglePerSeconds_ = 0.0f;
 	sf::Vector2f direction_ = {0.0f, 1.0f};
 	sf::Vector2f position_;
 	sf::Vector2f velocity_;
