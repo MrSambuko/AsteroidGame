@@ -44,6 +44,15 @@
     <ClCompile Include="GameLogic\ProjectileGameLogicObject.cpp">
       <Filter>GameLogic</Filter>
     </ClCompile>
+    <ClCompile Include="Physics\ProjectilePhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\AsteroidPhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\PlayerPhysicsObject.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="GameLogic">
@@ -113,6 +122,15 @@
     </ClInclude>
     <ClInclude Include="GameLogic\ProjectileGameLogicObject.hpp">
       <Filter>GameLogic</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\AsteroidPhysicsObject.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\ProjectilePhysicsObject.hpp">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics\PlayerPhysicsObject.hpp">
+      <Filter>Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

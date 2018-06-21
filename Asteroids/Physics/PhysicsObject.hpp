@@ -52,20 +52,5 @@ protected:
 using PhysicsObjectPtr = std::shared_ptr<PhysicsObject>;
 
 
-class PlayerPhysicsObject : public PhysicsObject
-{
-public:
-	PlayerPhysicsObject(Physics* physics, GameLogicObject* logicObject);
-};
 
-class AsteroidPhysicsObject : public PhysicsObject
-{
-public:
-	AsteroidPhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position);
-};
 
-class ProjectilePhysicsObject : public PhysicsObject
-{
-public:
-	ProjectilePhysicsObject(Physics* physics, GameLogicObject* logicObject, const sf::Vector2f& position);
-};

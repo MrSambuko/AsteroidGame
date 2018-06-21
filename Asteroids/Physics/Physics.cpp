@@ -2,9 +2,13 @@
 #include <random>
 
 #include "GameLogic/GameLogic.hpp"
+#include "System/Math.hpp"
+
+#include "AsteroidPhysicsObject.hpp"
+#include "PlayerPhysicsObject.hpp"
+#include "ProjectilePhysicsObject.hpp"
 
 #include "Physics.hpp"
-#include "System/Math.hpp"
 
 
 namespace
