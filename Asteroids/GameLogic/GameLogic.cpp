@@ -238,6 +238,9 @@ void GameLogic::destroyObjects()
 		case GL::PLAYER:
 			player_ = nullptr;
 			break;
+		case GL::BOSS:
+			bosses_.erase(std::static_pointer_cast<BossGameLogicObject>(object));
+			break;
 
 		default:
 			break;
