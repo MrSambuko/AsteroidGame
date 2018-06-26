@@ -10,8 +10,7 @@
 #include "ProjectilePhysicsObject.hpp"
 
 #include "Physics.hpp"
-
-
+#include <SFML/System/Vector3.hpp>
 
 
 namespace
@@ -140,5 +139,86 @@ void Physics::updatePositions(float dt)
 {
 	for (const auto& body : bodies_)
 		body->move(dt);
+}
+
+class Plane
+{
+public:
+	Plane() = default;
+	Plane(const sf::Vector3f& xAxis, const sf::Vector3f& yAxis, const sf::Vector3f& zAxis) :
+		xAxis_(xAxis), yAxis_(yAxis), zAxis_(zAxis) {}
+	explicit Plane(const sf::Vector3f& normal) : xAxis_(normal), yAxis_(normal), zAxis_(normal)
+	{
+		xAxis_ = yAxis_ = {-normal.y, normal.x, 0};
+		yAxis_ = crossProduct(yAxis_, xAxis_);
+
+		normalizeVector(&xAxis_);
+		normalizeVector(&yAxis_);
+		normalizeVector(&zAxis_);
+	}
+	Plane(const Plane&& plane) noexcept : xAxis_(plane.xAxis_), yAxis_(plane.yAxis_), zAxis_(plane.zAxis_) {}
+	Plane& operator = (const Plane&& plane)
+	{
+		xAxis_ = plane.xAxis_;
+		yAxis_ = plane.yAxis_;
+		zAxis_ = plane.zAxis_;
+		return *this;
+	}
+
+	void swapXZ()
+	{
+		const auto tmp = std::move(xAxis_);
+		xAxis_ = zAxis_;
+		zAxis_ = tmp;
+	}
+
+private:
+	sf::Vector3f xAxis_, yAxis_, zAxis_;
+
+};
+
+Plane setPlane(const std::vector<sf::Vector3f>& normals1, const std::vector<sf::Vector3f>& normals2, size_t num)
+{
+	Plane plane;
+	const auto& s1 = normals1.size();
+
+	if (num < s1)
+		plane = Plane(normals2[num - s1]);
+	else
+		plane = Plane(normals2[num - s1]);
+
+	plane.swapXZ();
+	return plane;
+}
+
+std::vector<Plane> getPlanes(const PhysicsObjectPtr b1, const PhysicsObjectPtr b2)
+{
+	const auto normals1 = b1->getNormals();
+	const auto normals2 = b2->getNormals();
+	const size_t size = normals1.size() + normals2.size();
+	std::vector<Plane> planes(size);
+
+	for (size_t index = 0; index < size; ++index)
+		planes[index] = std::move(setPlane(normals1, normals2, index));
+	return planes;
+}
+
+void Physics::accurateCollistionDetection( const PhysicsObjectPtr b1, const PhysicsObjectPtr b2 )
+{
+	// 1 - get all normals of an object
+	// 2 - get all planes for normals
+	
+	// for each plane
+	//  -- get models projections on plane
+	//  -- check if planes intersect
+
+	// intersection:
+	//  find perpendicular to side
+	//  make projection on this vector. If projections do not inersect - figures do not intersect
+
+	
+	const auto& planes = getPlanes(b1, b2);
+
+	
 }
 

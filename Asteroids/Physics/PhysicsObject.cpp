@@ -85,3 +85,22 @@ bool PhysicsObject::intersects(const PhysicsObject& other) const
 {
 	return shape_->getGlobalBounds().intersects(other.shape_->getGlobalBounds());
 }
+
+std::vector<sf::Vector3f> PhysicsObject::getNormals() const
+{
+	const auto& numPoints = shape_->getPointCount();
+	std::vector<sf::Vector3f> normals(numPoints);
+	const auto& transform = shape_->getTransform();
+	auto& prevPoint = std::move(transform.transformPoint(shape_->getPoint(0)));
+
+	for (size_t index = 1; index < numPoints; ++index)
+	{
+		const auto& p = shape_->getPoint(index);
+		const auto& resultPoint = transform.transformPoint(p);
+		const auto& normal = getNormal(resultPoint, prevPoint);
+		normals[index] = {normal.x, normal.y, 0};
+		prevPoint = resultPoint;
+	}
+
+	return normals;
+}

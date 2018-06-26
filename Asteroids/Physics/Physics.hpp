@@ -36,6 +36,8 @@ private:
 	void updateCollisions();
 	void updatePositions(float dt);
 
+	void accurateCollistionDetection(const PhysicsObjectPtr b1, const PhysicsObjectPtr b2);
+
 private:
 	float width_, height_;
 	CollisionCallback callback_;

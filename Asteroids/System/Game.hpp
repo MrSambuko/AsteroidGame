@@ -34,6 +34,11 @@ public:
 	void updateEvent(const sf::Event& event);
 
 private:
+	Game(const Game&&) noexcept {};
+	Game(const Game& ) = default;
+	Game& operator = (const Game&& ) { return *this; }
+	Game& operator = (const Game& ) { return *this; }
+
 	void switchState(GameNamespace::GameState newState);
 	void prepareMenu();
 	void prepareLevelCompleteScreen();

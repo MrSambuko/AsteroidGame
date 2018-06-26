@@ -4,6 +4,7 @@
 
 #include "SFML/System/Vector2.hpp"
 #include "SFML/Graphics/Shape.hpp"
+#include <SFML/System/Vector3.hpp>
 
 namespace PY
 {
@@ -36,6 +37,7 @@ public:
 	constexpr const sf::Vector2f& getPosition() const { return position_; }
 	constexpr const sf::Vector2f& getVelocity() const { return velocity_; }
 	constexpr const sf::Vector2f& getDirection() const { return direction_; }
+	std::vector<sf::Vector3f> getNormals() const;
 	std::shared_ptr<sf::Shape> getShape() const { return shape_; }
 protected:
 	Physics* physics_;
